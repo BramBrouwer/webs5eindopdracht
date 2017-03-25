@@ -1,6 +1,14 @@
 var express = require('express');
 var app = express();
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/restrace');
+
+//Models
+require('./models/race');
+require('./models/user');
+require('./models/waypoint');
+
 // Routes
 var home = require('./routes/home.js');
 var races = require('./routes/races.js');

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var mongoose = require('mongoose');
 
 //Models
 Race = mongoose.model('Race');
@@ -36,8 +37,6 @@ function addRace(req, res){
 		.fail(err => handleError(req, res, 500, err));
 }
 
-//
-
 //Routes
 router.route('/')
     .get(getRaces)
@@ -46,7 +45,5 @@ router.route('/')
 router.route('/:id')
     .get(getRaces);
 
-router.route('/new')
-    .get(newRaceForm);
 
 module.exports = router;
