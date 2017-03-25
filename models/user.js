@@ -36,4 +36,5 @@ userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
-mongoose.model('User', userSchema);
+// create the model for users and expose it to our app
+module.exports = mongoose.model('User', userSchema); //Wordt geexport zodat we de user model ook in passport setuo kunne gebruiken 

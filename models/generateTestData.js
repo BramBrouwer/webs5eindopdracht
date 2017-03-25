@@ -8,13 +8,18 @@ Race = mongoose.model('Race');
 function fillTestUsers(){
 	var testData = [
 		{
-			email : "admin",
-			password : bcrypt.hashSync("author",bcrypt.genSaltSync(8),null),
+			local : {
+                email: "admin",
+                password : bcrypt.hashSync("admin",bcrypt.genSaltSync(8),null)
+            },
 			role : "admin"
 		},
 		{
-			email : "user",
-			password : bcrypt.hashSync("user",bcrypt.genSaltSync(8),null)
+			local : {
+                email: "user",
+                password : bcrypt.hashSync("user",bcrypt.genSaltSync(8),null)
+            },
+			role : "user"
 		}
 	]
 	
