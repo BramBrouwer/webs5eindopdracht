@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var _ = require('underscore');
 var mongoose = require('mongoose');
+var handleError;
 
 //Models
 Race = mongoose.model('Race');

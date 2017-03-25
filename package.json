@@ -11,11 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt-nodejs": "latest",
+    "body-parser": "^1.17.1",
     "connect-flash": "~0.1.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "mongoose": "^4.8.7",
+    "morgan": "^1.8.1",
     "passport": "~0.1.17",
     "passport-google-oauth": "~0.1.5",
-    "passport-local": "~0.1.6"
+    "passport-local": "~0.1.6",
+    "underscore": "^1.8.3"
   }
 }
