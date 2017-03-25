@@ -10,6 +10,12 @@
   "author": "bram",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.15.2"
+    "bcrypt-nodejs": "latest",
+    "connect-flash": "~0.1.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.8.7",
+    "passport": "~0.1.17",
+    "passport-google-oauth": "~0.1.5",
+    "passport-local": "~0.1.6"
   }
 }
