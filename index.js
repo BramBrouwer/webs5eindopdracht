@@ -14,7 +14,7 @@ mongoose.connect('mongodb://localhost:27017/restrace');
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
-
+//TODO zorg ervoor dan login in een aparte route staat en voeg authenticatie en shit toe 
 //Models
 require('./models/race');
 require('./models/user');
@@ -24,6 +24,7 @@ require('./models/generateTestData')();
 var home = require('./routes/home.js');
 var races = require('./routes/races.js');
 var users = require('./routes/users.js');
+var login = require('./routes/login.js');
 
 //Views
 app.set('views', path.join(__dirname, 'views'));
@@ -41,5 +42,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.use('/', home);
 app.use('/races', races);
 app.use('/users', users);
+app.use('/login', login);
 
 app.listen(process.env.PORT || 3000);

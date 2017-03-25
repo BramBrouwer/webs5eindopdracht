@@ -39,7 +39,8 @@ function addUser(req, res){
 //Routes
 router.route('/')
     .get(getUsers)
-    .post(addUser);
+    .post(addUser);9
+	
 
 router.route('/:id')
     .get(getUsers);
