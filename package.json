@@ -13,9 +13,14 @@
     "bcrypt-nodejs": "latest",
     "connect-flash": "~0.1.1",
     "express": "^4.15.2",
+    "express-session": "~1.0.0",
     "mongoose": "^4.8.7",
     "passport": "~0.1.17",
+    "body-parser": "~1.0.0",
+    "cookie-parser": "~1.0.0",
+    "ejs" : "~0.8.5",               
     "passport-google-oauth": "~0.1.5",
-    "passport-local": "~0.1.6"
+    "passport-local": "~0.1.6",
+    "q": "^1.5.0"
   }
 }

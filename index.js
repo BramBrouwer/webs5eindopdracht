@@ -1,20 +1,42 @@
-var express = require('express');
-var app = express();
-//var cookieParser = require('cookie-parser');
-//var bodyParser = require('body-parser');
-
+var express  = require('express');
+var app      = express();
+var path = require('path');
 var mongoose = require('mongoose');
+var passport = require('passport');
+var flash    = require('connect-flash');
+
+var cookieParser = require('cookie-parser');
+var bodyParser   = require('body-parser');
+var session      = require('express-session');
+
 mongoose.connect('mongodb://localhost:27017/restrace');
+
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser()); // get information from html forms
+
 
 //Models
 require('./models/race');
 require('./models/user');
 require('./models/generateTestData')();
 
-// Routes
+//Routes
 var home = require('./routes/home.js');
 var races = require('./routes/races.js');
 var users = require('./routes/users.js');
+
+//Views
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs'); // set up ejs for templating
+
+
+// required for passport
+app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+
 
 app.use('/', home);
 app.use('/races', races);

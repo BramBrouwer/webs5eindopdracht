@@ -43,6 +43,7 @@ router.route('/')
 
 router.route('/:id')
     .get(getUsers);
+	
 
 
 module.exports = router;
