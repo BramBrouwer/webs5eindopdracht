@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 console.log('Initializing race schema');
 
 var raceSchema = new mongoose.Schema({
-    Name: {
+    name: {
         type: String,
         required: true
     },
-    Waypoints: [{type: String, unique: true}],
+    waypoints: [{type: String, unique: true}],
     Active: {
         type: Boolean,
         default: false

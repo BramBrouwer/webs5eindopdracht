@@ -17,7 +17,11 @@ var userSchema = mongoose.Schema({
         email        : String,
         name         : String
     },
-    Waypoints: [{type: String, unique: true}]
+    waypoints: [{type: String, unique: true}],
+    role: {
+        type: String,
+        default: "user"
+    }
 
 });
 
