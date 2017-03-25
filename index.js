@@ -1,31 +1,37 @@
-var express  = require('express');
-var app      = express();
+var express = require('express');
+var app = express();
 var path = require('path');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
-
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
 mongoose.connect('mongodb://localhost:27017/restrace');
 require('./config/passport')(passport); // pass passport for configuration
 
-
+mongoose.Promise = require('q').Promise;
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
 //TODO zorg ervoor dan login in een aparte route staat en voeg authenticatie en shit toe 
 //Models
 require('./models/race');
-//require('./models/user');
+//require('./models/user'); (wordt geexport -- kan misschien ook gewoon gerequired worden en gerequired opnieuwe in passport config)
 require('./models/generateTestData')();
 
 //Routes
 var home = require('./routes/home.js');
 var races = require('./routes/races.js');
 var users = require('./routes/users.js');
+
+app.use('/', require('./routes/home.js'));
+app.use('/races', require('./routes/races.js'));
+app.use('/users', require('./routes/users.js'));
+
+
 
 
 //Views
@@ -45,5 +51,6 @@ require('./routes/login.js')(app, passport); // Try to pass passport and app AFT
 app.use('/', home);
 app.use('/races', races);
 app.use('/users', users);
+
 
 app.listen(process.env.PORT || 3000);
