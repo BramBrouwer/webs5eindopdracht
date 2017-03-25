@@ -19,7 +19,8 @@ app.use(bodyParser()); // get information from html forms
 //TODO zorg ervoor dan login in een aparte route staat en voeg authenticatie en shit toe 
 //Models
 require('./models/race');
-//require('./models/user'); (wordt geexport -- kan misschien ook gewoon gerequired worden en gerequired opnieuwe in passport config)
+//require('./models/user'); 
+//^^(wordt geexport -- kan misschien ook gewoon gerequired worden en gerequired opnieuwe in passport config)
 require('./models/generateTestData')();
 
 //Routes
