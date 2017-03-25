@@ -2,6 +2,7 @@
 // load the things we need
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
+console.log('Initializing user schema');
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
@@ -16,7 +17,11 @@ var userSchema = mongoose.Schema({
         email        : String,
         name         : String
     },
-    Waypoints: [{type: String, unique: true}]
+    waypoints: [{type: String, unique: true}],
+    role: {
+        type: String,
+        default: "user"
+    }
 
 });
 
@@ -31,4 +36,5 @@ userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
-mongoose.model('User', userSchema);
+// create the model for users and expose it to our app
+module.exports = mongoose.model('User', userSchema); //Wordt geexport zodat we de user model ook in passport setuo kunne gebruiken 
