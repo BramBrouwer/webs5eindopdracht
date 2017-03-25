@@ -15,7 +15,7 @@ mongoose.Promise = require('q').Promise;
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
-
+//TODO zorg ervoor dan login in een aparte route staat en voeg authenticatie en shit toe 
 //Models
 require('./models/race');
 require('./models/user');
@@ -25,6 +25,7 @@ require('./models/generateTestData')();
 app.use('/', require('./routes/home.js'));
 app.use('/races', require('./routes/races.js'));
 app.use('/users', require('./routes/users.js'));
+app.use('/login', require('./routes/login.js'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
