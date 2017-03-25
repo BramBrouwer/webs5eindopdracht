@@ -2,6 +2,7 @@
 // load the things we need
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
+console.log('Initializing user schema');
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
@@ -16,7 +17,11 @@ var userSchema = mongoose.Schema({
         email        : String,
         name         : String
     },
-    Waypoints: [{type: String, unique: true}]
+    waypoints: [{type: String, unique: true}],
+    role: {
+        type: String,
+        default: "user"
+    }
 
 });
 

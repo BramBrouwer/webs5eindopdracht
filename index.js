@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+//var cookieParser = require('cookie-parser');
+//var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/restrace');
@@ -7,7 +9,7 @@ mongoose.connect('mongodb://localhost:27017/restrace');
 //Models
 require('./models/race');
 require('./models/user');
-require('./models/waypoint');
+require('./models/generateTestData')();
 
 // Routes
 var home = require('./routes/home.js');
