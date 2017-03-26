@@ -22,8 +22,11 @@ function getRaces(req, res){
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
 			if(req.params.id){
 				data = data[0];
+				res.render('race-info.ejs', { title: 'Race', race: data });
+				return;
 			}
-			return res.json(data);
+			res.render('races.ejs', { title: 'Races', races: data });
+			return;
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
