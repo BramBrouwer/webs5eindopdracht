@@ -1,11 +1,11 @@
 module.exports = function(app, passport) {
 
 //Routes
-router.get('/', function(req, res){
+app.get('/', function(req, res){
          res.render('login.ejs', { title: 'Login', message: req.flash('loginMessage') });
 });
 
-router.post('/',function(req,res) {
+app.post('/',function(req,res) {
     
 });
 

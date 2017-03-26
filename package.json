@@ -11,20 +11,18 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt-nodejs": "latest",
-    "body-parser": "^1.17.1",
+    "body-parser": "~1.0.0",
     "connect-flash": "~0.1.1",
-    "cookie-parser": "^1.4.3",
+    "cookie-parser": "~1.0.0",
+    "ejs": "^0.8.8",
     "express": "^4.15.2",
-    "express-session": "~1.0.0",
+    "express-session": "^1.0.4",
     "mongoose": "^4.8.7",
     "morgan": "^1.8.1",
     "passport": "~0.1.17",
-    "body-parser": "~1.0.0",
-    "cookie-parser": "~1.0.0",
-    "ejs" : "~0.8.5",               
     "passport-google-oauth": "~0.1.5",
     "passport-local": "~0.1.6",
-    "underscore": "^1.8.3",
-    "q": "^1.5.0"
+    "q": "^1.5.0",
+    "underscore": "^1.8.3"
   }
 }
