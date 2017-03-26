@@ -16,10 +16,8 @@ mongoose.Promise = require('q').Promise;
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
-//TODO zorg ervoor dan login in een aparte route staat en voeg authenticatie en shit toe 
 //Models
 require('./models/race');
-//require('./models/user'); (wordt geexport -- kan misschien ook gewoon gerequired worden en gerequired opnieuwe in passport config)
 require('./models/generateTestData')();
 
 //Routes
@@ -34,10 +32,12 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
+//- User wordt geexport zodat deze ook bereikbaar is in passport configuration (om een of andere reden lukt dit niet als ie gewoon hie gerequired wordt)
 
 //Views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); // set up ejs for templating
+
 // required for passport
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
 app.use(passport.initialize());
