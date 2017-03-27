@@ -29,7 +29,7 @@ function getNewWaypoint(req,res){
 
 //Get all races TODO: pagination/filtering
 function getRaces(req, res){
-	
+	var user = new User(req.user);
 	var query = {};
 	if(req.params.id){
 		query._id = req.params.id;
@@ -67,6 +67,7 @@ function addRace(req, res){
 
 //Get the race object so we can append the new waypoint object to waypoints array
 function getRaceForNewWaypoint(req,res){
+	if(req.user.role != "admin") {res.redirect('/');}
 	
 	var race;
 	var query = {};
@@ -74,7 +75,6 @@ function getRaceForNewWaypoint(req,res){
 	var waypoint = {};
 	waypoint.googleid = req.body.googleid;
 	waypoint.name = req.body.name;
-	console.log(waypoint);
 	
 	var result = Race.find(query);
 	
@@ -82,8 +82,6 @@ function getRaceForNewWaypoint(req,res){
 		.then(data => {
 			race = data[0];
 			var curWaypoints = race.waypoints;
-			console.log(curWaypoints);
-			console.log("Race retrieved, creating new waypoint");
 			createNewWaypoint(waypoint,res,race._id,curWaypoints); 
 		})
 		.fail(err => handleError(req, res, 500, err));
@@ -99,6 +97,7 @@ function createNewWaypoint(waypoint,res,raceId,curWaypoints){
 			{ new: true},
 			function (err,race){
 				if(err)  return handleError(err);
+				console.log("waypoint added");
 				res.status(201);
 				res.json(race);
 			})	
@@ -118,7 +117,5 @@ router.route('/:id')
 router.route('/:id/waypoints/new')
 .get(getNewWaypoint)
 .post(getRaceForNewWaypoint);
-
-
 
 module.exports = router;

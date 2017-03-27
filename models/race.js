@@ -11,11 +11,7 @@ var raceSchema = new mongoose.Schema({
         default: false
     },
     waypoints: [{
-        googleid: {
-            type: String,
-            required: true,
-            unique: true
-        },
+        googleid: String,
         name : String
     }]
 });

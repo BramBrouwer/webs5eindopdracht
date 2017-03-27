@@ -43,15 +43,25 @@ function fillTestUsers(){
         var testData = [
             {
                 name: "Race 1"
-                //waypoints: ["waypoint1.1","waypoint1.2","waypoint1.3"]
             },
             {
                 name: "Race 2"
-                //waypoints: ["waypoint2.1","waypoint2.2","waypoint2.3"]
             },
             {
                 name: "Race 3",
                 waypoints: [{googleid: "waypoint3.1",name: "waypoint3.2"}]
+            }, 
+            {
+                name: "Race 4"
+            },
+            {
+                name: "Race 5"
+            },
+            {
+                name: "Race 6"
+            },
+            {
+                name: "Race 7"
             }
         ]
         
