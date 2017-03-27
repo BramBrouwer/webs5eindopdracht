@@ -1,0 +1,9 @@
+<!-- views/profile.ejs -->
+<% include partials/head %>
+<% include partials/navbar %>
+<% if(JSON.stringify(user.google) != '{}'){ %>
+    <% include profiles/google %>
+<% }if(JSON.stringify(user.local) != '{}'){ %>
+    <% include profiles/local %>
+<% } %>
+<% include partials/footer %>
