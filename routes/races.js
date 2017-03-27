@@ -9,7 +9,14 @@ Race = mongoose.model('Race');
 
 //Functions
 
-//API
+function getNewRace(req,res){
+	if(user.role == "admin"){
+		res.render('admin/races/new');
+	}else{
+		res.render('/');
+	}
+	
+}
 function getRaces(req, res){
 	var user = new User(req.user);
     var query = {};
@@ -48,7 +55,10 @@ router.route('/')
     .get(getRaces)
     .post(addRace);
 
-router.route('/:id')
+Router.route('/new')
+	.get(getNewRace);
+
+Router.route('/:id')
     .get(getRaces);
 
 

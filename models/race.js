@@ -6,8 +6,8 @@ var raceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    waypoints: [{type: String, unique: true}],
-    Active: {
+    waypoints: [{type: mongoose.Schema.Types.ObjectId, ref: 'Waypoint'}],
+    active: {
         type: Boolean,
         default: false
     }

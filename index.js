@@ -18,6 +18,7 @@ app.use(bodyParser()); // get information from html forms
 
 //Models
 require('./models/race');
+require('./models/waypoint');
 require('./models/generateTestData')();
 
 //- User wordt geexport zodat deze ook bereikbaar is in passport configuration (om een of andere reden lukt dit niet als ie gewoon hie gerequired wordt)
