@@ -105,6 +105,7 @@ function createNewWaypoint(waypoint,res,raceId,curWaypoints){
 
 //Update race state
 function updateRaceState(req,res){
+	if(req.user.role != "admin") {res.redirect('/');}
 	var active = req.body.active;
 	var raceId = req.params.id;
 	Race
@@ -118,9 +119,22 @@ function updateRaceState(req,res){
 				res.status(201);
 				res.redirect('/races');
 			})	
-	
-	
-	
+}
+
+//Delete race (via ajax request)
+function deleteRace(req,res){
+	console.log('debug');
+	if(req.user.role != "admin") {res.redirect('/');}
+	Race.remove({ _id: req.params.id }, function(err) {
+    if (!err) {
+           console.log("Race deleted")
+			res.status(201);
+    }
+    else {
+			console.log('error deleting race')
+			handleError(req, res, 500);   
+ 		}
+	});
 }
 
 //Routes
@@ -132,7 +146,9 @@ router.route('/new')
 	.get(getNewRace);
 	
 router.route('/:id')
-    .get(getRaces);
+    .get(getRaces)
+	.delete(deleteRace);
+
 	
 router.route('/:id/waypoints/new')
 .get(getNewWaypoint)
