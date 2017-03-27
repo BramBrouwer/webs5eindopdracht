@@ -103,6 +103,26 @@ function createNewWaypoint(waypoint,res,raceId,curWaypoints){
 			})	
 }
 
+//Update race state
+function updateRaceState(req,res){
+	var active = req.body.active;
+	var raceId = req.params.id;
+	Race
+		.findByIdAndUpdate(
+			raceId,
+			{ $set: {active: active}},
+			{ new: true},
+			function (err,race){
+				if(err)  return handleError(err);
+				console.log("Race started");
+				res.status(201);
+				res.redirect('/races');
+			})	
+	
+	
+	
+}
+
 //Routes
 router.route('/')
     .get(getRaces)
@@ -117,5 +137,9 @@ router.route('/:id')
 router.route('/:id/waypoints/new')
 .get(getNewWaypoint)
 .post(getRaceForNewWaypoint);
+
+router.route('/:id/state')
+.post(updateRaceState);
+
 
 module.exports = router;
