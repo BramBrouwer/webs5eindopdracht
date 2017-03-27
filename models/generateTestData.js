@@ -3,7 +3,7 @@ var bcrypt   = require('bcrypt-nodejs');
 
 User = mongoose.model('User');
 Race = mongoose.model('Race');
-
+Waypoint = mongoose.model('Waypoint');
 
 function fillTestUsers(){
 	var testData = [
@@ -70,9 +70,34 @@ function fillTestUsers(){
         });
     };
     
+    
+    function filltestwaypoints(){
+        var testData = [
+            {
+               googleid: "memerinoes",
+               name: "namerinos"
+            }
+        ]
+        
+         Waypoint.find({}).then(data => {
+            if(data.length == 0){
+			    console.log('Creating waypoints testdata');
+			    testData.forEach(function(wap){
+				new Waypoint(wap).save();
+			    });
+		    } 
+            else
+            {
+			    console.log('Skipping create waypoints testdata, allready present');
+		    }
+        });
+        
+    };
+    
     module.exports = function(){
         fillTestRaces();
         fillTestUsers();
+        filltestwaypoints();
 }
 	
 	
