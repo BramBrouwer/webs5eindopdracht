@@ -1,0 +1,14 @@
+<ol class="breadcrumb">
+    <% if (bread.length == 0) { %>
+        <li class="active">Home</li>
+    <% }else{ %>
+        <li><a href="/">Home</a></li>
+    <% } %>
+    <% for (var i=0;i < bread.length;i++) { %>
+        <% if (i == bread.length-1) { %>
+            <li class="active"><%= bread[i] %></li>
+        <% } else{ %>
+            <li><a href="/<%= bread[i] %>"><%= bread[i] %></a></li>
+        <% } %>
+    <% } %>
+</ol>
