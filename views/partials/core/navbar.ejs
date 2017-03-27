@@ -16,17 +16,18 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Races<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="races">All Races</a></li>
-                            <li><a href="#">Create New Race</a></li>
-                            <li><a href="#">Something else here</a></li>
+                            <li><a href="/races">All Races</a></li>
+                            <li><a href="#">My Races</a></li>
+                            <% if (user.role =='admin') { %>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">One separated link</a></li>
+                            <li><a href="#">+ Create New Race</a></li>
+                            <% } %>
                         </ul>
                     </li>
                     <li><a href="/users">Users</a></li>
-                    <li><a href="/profile">Profile</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/profile">Profile</a></li>
                     <li><a href="/profile/logout">Logout</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
