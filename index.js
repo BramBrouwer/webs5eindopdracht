@@ -17,7 +17,6 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
 //Models
-require('./models/waypoint');
 require('./models/race');
 require('./models/generateTestData')();
 

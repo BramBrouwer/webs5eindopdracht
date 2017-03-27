@@ -10,7 +10,14 @@ var raceSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    waypoints: [{type: mongoose.Schema.Types.ObjectId, ref: 'Waypoint'}]
+    waypoints: [{
+        googleid: {
+            type: String,
+            required: true,
+            unique: true
+        },
+        name : String
+    }]
 });
 
 mongoose.model('Race', raceSchema);

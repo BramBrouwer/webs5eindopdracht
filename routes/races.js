@@ -6,7 +6,6 @@ var passport = require('passport');
 
 //Models
 Race = mongoose.model('Race');
-Waypoint = mongoose.model('Waypoint');
 //Functions
 
 //Page for creating a new race 
@@ -65,41 +64,47 @@ function addRace(req, res){
 		.fail(err => handleError(req, res, 500, err));
 }
 
+/*
+Get the race object so we can append the new waypoint object to waypoints array
+*/
 function addWaypoint(req,res){
 	var race;
 	var query = {};
 	query._id = req.params.id;
-	var waypoint = new Waypoint(req.body);
+	var waypoint = {};
+	waypoint.googleid = req.body.googleid;
+	waypoint.name = req.body.name;
+	console.log(waypoint);
+	
 	var result = Race.find(query);
 	
 	result
 		.then(data => {
 			race = data[0];
 			var curWaypoints = race.waypoints;
+			console.log(curWaypoints);
 			console.log("Race retrieved, creating new waypoint");
 			createNewWaypoint(waypoint,res,race._id,curWaypoints); 
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
-
+/*
+Add waypoint to the waypoints array and update race record in the database
+*/
 function createNewWaypoint(waypoint,res,raceId,curWaypoints){
-
-	waypoint.save()
-		.then(savedWaypoint => {
-		console.log("New waypoint created");
-			curWaypoints.push(savedWaypoint.id);  //Add to existing list of waypoints
-			Race
-			.findByIdAndUpdate(
-				raceId,
-				{ $set: {waypoints: curWaypoints}},
-				{ new: true},
-				function (err,race){
-					if(err)  return handleError(err);
-					res.status(201);
-					res.json(race);
-				})
-		})
-		.fail(err => handleError(req, res, 500, err));
+				
+		curWaypoints.push(waypoint);  //Add to existing list of waypoints
+		
+		Race
+		.findByIdAndUpdate(
+			raceId,
+			{ $set: {waypoints: curWaypoints}},
+			{ new: true},
+			function (err,race){
+				if(err)  return handleError(err);
+				res.status(201);
+				res.json(race);
+			})	
 }
 
 //Routes
