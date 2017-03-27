@@ -7,7 +7,7 @@ var raceSchema = new mongoose.Schema({
         required: true
     },
     waypoints: [{type: String, unique: true}],
-    Active: {
+    active: {
         type: Boolean,
         default: false
     }

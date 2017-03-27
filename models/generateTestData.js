@@ -44,6 +44,7 @@ function fillTestUsers(){
         var testData = [
             {
                 name: "Race 1",
+                active: true,
                 waypoints: ["waypoint1.1","waypoint1.2","waypoint1.3"]
             },
             {
