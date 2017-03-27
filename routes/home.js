@@ -4,7 +4,8 @@ var router = express.Router();
 //Functions
 
 function getHome(req, res){
-    res.render('home.ejs', { title: 'Home', bread: [], message: req.flash('loginMessage') });
+    var user = new User(req.user);
+    res.render('home.ejs', { title: 'Home', bread: [], user: user, message: req.flash('loginMessage') });
 }
 
 //Routes
