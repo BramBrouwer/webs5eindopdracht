@@ -6,6 +6,7 @@ var passport = require('passport');
 
 //Models
 Race = mongoose.model('Race');
+
 //Functions
 
 //Page for creating a new race 
@@ -64,10 +65,8 @@ function addRace(req, res){
 		.fail(err => handleError(req, res, 500, err));
 }
 
-/*
-Get the race object so we can append the new waypoint object to waypoints array
-*/
-function addWaypoint(req,res){
+//Get the race object so we can append the new waypoint object to waypoints array
+function getRaceForNewWaypoint(req,res){
 	var race;
 	var query = {};
 	query._id = req.params.id;
@@ -88,13 +87,10 @@ function addWaypoint(req,res){
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
-/*
-Add waypoint to the waypoints array and update race record in the database
-*/
+//Add waypoint to the waypoints array and update race record in the database
 function createNewWaypoint(waypoint,res,raceId,curWaypoints){
 				
-		curWaypoints.push(waypoint);  //Add to existing list of waypoints
-		
+		curWaypoints.push(waypoint);  
 		Race
 		.findByIdAndUpdate(
 			raceId,
@@ -120,7 +116,6 @@ router.route('/:id')
 	
 router.route('/:id/waypoints/new')
 .get(getNewWaypoint)
-.post(addWaypoint);
-
+.post(getRaceForNewWaypoint);
 
 module.exports = router;
