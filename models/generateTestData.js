@@ -10,6 +10,7 @@ function fillTestUsers(){
 		{
 			local : {
                 email: "admin",
+                name: 'Ad Min',
                 password : bcrypt.hashSync("admin",bcrypt.genSaltSync(8),null)
             },
 			role : "admin"
@@ -17,6 +18,7 @@ function fillTestUsers(){
 		{
 			local : {
                 email: "user",
+                name: 'Us Er',
                 password : bcrypt.hashSync("user",bcrypt.genSaltSync(8),null)
             },
 			role : "user"

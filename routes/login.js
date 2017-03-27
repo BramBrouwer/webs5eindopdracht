@@ -1,24 +1,33 @@
-module.exports = function(app, passport) {
+var express = require('express');
+var router = express.Router();
+var passport = require('passport');
+
+//Functions
+function getHome(req, res){
+         res.render('login.ejs', { title: 'Login', message: req.flash('loginMessage') });
+}
+
 
 //Routes
-app.get('/login', function(req, res){
-         res.render('login.ejs', { title: 'Login', message: req.flash('loginMessage') });
-});
+router.route('/').get(getHome);
 
 //Local login
-app.post('/login', passport.authenticate('local-login', {
+router.route('/').post(passport.authenticate('local', {
     successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/login', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));
 
 //Google login 
-app.get('/login/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+router.route('/google').get(passport.authenticate('google', { scope : ['profile', 'email'] }));
 
     // Google login callback
-app.get('/login/google/callback',
+router.route('/google/callback').get(
         passport.authenticate('google', {
                 successRedirect : '/profile',
                 failureRedirect : '/'
-        }));
-}
+        }
+    )
+);
+
+module.exports = router;
