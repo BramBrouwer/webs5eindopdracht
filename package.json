@@ -17,7 +17,6 @@
     "ejs": "^0.8.8",
     "express": "^4.15.2",
     "express-session": "^1.0.4",
-    "googleplaces": "^0.6.1",
     "jquery": "^3.2.1",
     "mongoose": "^4.8.7",
     "morgan": "^1.8.1",
