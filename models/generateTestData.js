@@ -4,7 +4,6 @@ var bcrypt   = require('bcrypt-nodejs');
 User = mongoose.model('User');
 Race = mongoose.model('Race');
 
-
 function fillTestUsers(){
 	var testData = [
 		{
@@ -45,15 +44,26 @@ function fillTestUsers(){
             {
                 name: "Race 1",
                 active: true,
-                waypoints: ["waypoint1.1","waypoint1.2","waypoint1.3"]
             },
             {
-                name: "Race 2",
-                waypoints: ["waypoint2.1","waypoint2.2","waypoint2.3"]
+                name: "Race 2"
             },
             {
                 name: "Race 3",
-                waypoints: ["waypoint3.1","waypoint3.2","waypoint3.3"," waypoint3.4","waypoint3.5","waypoint3.6"]
+                active: true,
+                waypoints: [{googleid: "waypoint3.1",name: "waypoint3.2"}]
+            }, 
+            {
+                name: "Race 4"
+            },
+            {
+                name: "Race 5"
+            },
+            {
+                name: "Race 6"
+            },
+            {
+                name: "Race 7"
             }
         ]
         
@@ -71,6 +81,8 @@ function fillTestUsers(){
         });
     };
     
+    
+   
     module.exports = function(){
         fillTestRaces();
         fillTestUsers();

@@ -47,7 +47,7 @@ app.use('/login', require('./routes/login.js'));
 app.use('/races', require('./routes/races.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/profile', require('./routes/profile.js'));
-
+app.use('/places',require('./routes/places.js'))
 
 app.listen(process.env.PORT || 3000);
 module.exports = app;
