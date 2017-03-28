@@ -1,8 +1,9 @@
 RACE 
 - races/id/waypoints moet bestaan omdat api life
 
-PLACES
+PLACES (is dit de beste plek om de user te laten zoeken naar places om als waypoint te gebruiken?)
 -/places -- zoek in places met query string variabelen nearby//naam//id//etc return json
+- uitzoeken hoe je ajax call doet // met of zonder jquery? 
 - google place api call
 - paginated list return
 - filtering
@@ -19,7 +20,7 @@ socket op e race/id:/iets route? om te luisteren naar changes in de race
 
 TODO LATER 
 - aan de hand van header json of html returnen 
-- auth op een andere manier?
+- auth op een andere manier? --> zoals in de race/waypoint edit zooi (1 line)
 - routen overal hetzelfde
 - validion op dubbele waypoints toevoegen
 - consisten error reporten / afhandelen
