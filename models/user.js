@@ -22,8 +22,8 @@ var userSchema = mongoose.Schema({
     role: {
         type: String,
         default: "user"
-    }
-
+    },
+    races: [{_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Race'}, name: String}]
 });
 
 // methods ======================

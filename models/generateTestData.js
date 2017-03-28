@@ -42,13 +42,15 @@ function fillTestUsers(){
     function fillTestRaces(){
         var testData = [
             {
-                name: "Race 1"
+                name: "Race 1",
+                active: true,
             },
             {
                 name: "Race 2"
             },
             {
                 name: "Race 3",
+                active: true,
                 waypoints: [{googleid: "waypoint3.1",name: "waypoint3.2"}]
             }, 
             {

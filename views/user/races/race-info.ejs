@@ -9,7 +9,6 @@
                         <div class="col-xs-3">ID:</div> <div class="col-xs-6"><%= race._id %></div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="col-xs-9"><a href="#" class="btn btn-block btn-xs btn-danger" style="border: 0px;">Delete</a></div>
                     </div>
                 </div>
                 <div class="row">
@@ -19,10 +18,19 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-9" style="border-right:2px solid black">
-                        <div class="col-xs-3">Active: </div> <div class="col-xs-6"><%= race.Active %></div>
+                        <div class="col-xs-3">Active: </div> <div class="col-xs-6"><%= race.active %></div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="col-xs-9"><a href="#" class="btn btn-block btn-xs btn-success" style="border: 0px;">Edit</a></div>
+                        <% if(JSON.stringify(user.races).includes(race._id)) { %>
+                            <div class="col-xs-2">Joined</div>
+                        <% }else{ %>
+                            <form id="join<%= i %>" action="/races/user/new" method="post">
+                                <input type="hidden" name="userid" value="<%= user._id %>">
+                                <input type="hidden" name="raceid" value="<%= race._id %>">
+                                <input type="hidden" name="racename" value="<%= race.name %>">
+                                <div class="col-xs-9"><a href="#" class="btn btn-block btn-xs btn-success" onclick="document.getElementById('join<%= i %>').submit();">Join</a></div>
+                            </form>
+                        <% } %>
                     </div>
                 </div>
                 </div>

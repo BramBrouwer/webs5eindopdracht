@@ -12,7 +12,8 @@ var raceSchema = new mongoose.Schema({
     },
     waypoints: [{
         googleid: String,
-        name : String
+        name : String,
+        users: [{_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}}]
     }]
 });
 
