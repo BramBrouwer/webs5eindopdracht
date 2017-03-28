@@ -96,7 +96,7 @@ function createNewWaypoint(waypoint,res,raceId,curWaypoints){
 			{ $set: {waypoints: curWaypoints}},
 			{ new: true},
 			function (err,race){
-				if(err)  return handleError(err);
+				if(err) res.json({err});
 				console.log("waypoint added");
 				res.status(201);
 				res.json(race);

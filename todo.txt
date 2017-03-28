@@ -1,0 +1,35 @@
+RACE 
+- races/id/waypoints moet bestaan omdat api life
+
+PLACES
+-/places -- zoek in places met query string variabelen nearby//naam//id//etc return json
+- google place api call
+- paginated list return
+- filtering
+- returned json 
+- implement in interface : race:id/ +  add waypoint
+
+USER
+- race joinen
+- waypoint taggen USERS/:id/RACES/:id/waypoint/:id POST ?
+
+SOCKET 
+socket op e race/id:/iets route? om te luisteren naar changes in de race
+(dit is makkelijker te maken als de user/race/waypoint/ post route bestaat om te taggen 
+
+TODO LATER 
+- aan de hand van header json of html returnen 
+- auth op een andere manier?
+- routen overal hetzelfde
+- validion op dubbele waypoints toevoegen
+- consisten error reporten / afhandelen
+- unique waardes forcen met het unique attribuut binnen een array binnen een record werkt niet. verificatie meot ergens anders
+
+API key
+AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw
+
+CLIENT ID
+505802495786-fr9e77vv2q7ufa0thvmvvd6u1bqocjgd.apps.googleusercontent.com
+
+Secret 
+dlCzAaKuvK7PpHHWa5zgN2Bq
