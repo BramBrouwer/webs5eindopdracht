@@ -1,0 +1,58 @@
+<!-- views/race-info.ejs -->
+    <% include ../../partials/core/head %>
+    <% include ../../partials/core/navbar %>
+            <div class="col-sm-6 col-sm-offset-3">
+            <div style="padding-bottom: 10%">
+                <h1><span class="fa fa-flag-checkered"></span> <%= race.name %></h1>
+                <div class="row">
+                    <div class="col-sm-9" style="border-right:2px solid black">
+                        <div class="col-xs-3">ID:</div> <div class="col-xs-6"><%= race._id %></div>
+                    </div>
+                    <div class="col-sm-3">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9" style="border-right:2px solid black">
+                        <div class="col-xs-3">Name: </div> <div class="col-xs-6"><%= race.name %></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9" style="border-right:2px solid black">
+                        <div class="col-xs-3">Active: </div> <div class="col-xs-6"><%= race.active %></div>
+                    </div>
+                    <div class="col-sm-3">
+                        <% if(JSON.stringify(user.races).includes(race._id)) { %>
+                            <div class="col-xs-2">Joined</div>
+                        <% }else{ %>
+                            <form id="join<%= i %>" action="/races/user/new" method="post">
+                                <input type="hidden" name="userid" value="<%= user._id %>">
+                                <input type="hidden" name="raceid" value="<%= race._id %>">
+                                <input type="hidden" name="racename" value="<%= race.name %>">
+                                <div class="col-xs-9"><a href="#" class="btn btn-block btn-xs btn-success" onclick="document.getElementById('join<%= i %>').submit();">Join</a></div>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+                </div>
+                <div class="panel-group" role="tablist">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="collapseListGroupHeading1">
+                            <h4 class="panel-title"> <a href="#collapseListGroup1" class="collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseListGroup1">Waypoints</a> </h4> </div>
+                        <div class="panel-collapse collapse" role="tabpanel" id="collapseListGroup1" aria-labelledby="collapseListGroupHeading1" aria-expanded="false">
+                            <ul class="list-group">
+                                <% for(var i=0;i < race.waypoints.length;i++){ %>
+                                    <li class="list-group-item"><%= race.waypoints[i] %></li>
+                                    <% var exists = true; %>
+                                <% } %>
+                                <% if (!exists){ %>
+                                    <li class="list-group-item">No waypoints found</li>
+                                <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<% include ../../partials/core/footer %>

@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
-    if (req.path =='/login' || req.path == '/login/google' || req.path == '/login/google/callback')
+    if (req.path.startsWith('/login'))
         return next();
     // if they aren't redirect them to the home page
     res.redirect('/login');
@@ -47,7 +47,7 @@ app.use('/login', require('./routes/login.js'));
 app.use('/races', require('./routes/races.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/profile', require('./routes/profile.js'));
-
+app.use('/places',require('./routes/places.js'))
 
 app.listen(process.env.PORT || 3000);
 module.exports = app;
