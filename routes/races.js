@@ -48,7 +48,11 @@ function getRaces(req, res){
 			res.render('' +user.role + '/races/races.ejs', { title: 'Races', bread: ['Races'], user: user, races: data });
 			return;
 		})
-		.fail(err => handleError(req, res, 500, err));
+		.fail(err => {
+			console.log("error finding races");
+			res.status(500);
+			res.json({err});
+		});
 }
 
 //Add new race to database
@@ -62,7 +66,11 @@ function addRace(req, res){
 			res.status(201);
 			res.json(savedRace);
 		})
-		.fail(err => handleError(req, res, 500, err));
+		.fail(err => {
+			console.log("error creating race");
+			res.status(500);
+			res.json({err});
+		});
 }
 
 //Get the race object so we can append the new waypoint object to waypoints array
@@ -84,7 +92,11 @@ function getRaceForNewWaypoint(req,res){
 			var curWaypoints = race.waypoints;
 			createNewWaypoint(waypoint,res,race._id,curWaypoints); 
 		})
-		.fail(err => handleError(req, res, 500, err));
+		.fail(err => {
+			console.log("error getting race");
+			res.status(500);
+			res.json({err});
+		});
 }
 //Add waypoint to the waypoints array and update race record in the database
 function createNewWaypoint(waypoint,res,raceId,curWaypoints){
@@ -96,7 +108,7 @@ function createNewWaypoint(waypoint,res,raceId,curWaypoints){
 			{ $set: {waypoints: curWaypoints}},
 			{ new: true},
 			function (err,race){
-				if(err) res.json({err});
+				if(err) return res.json({err});
 				console.log("waypoint added");
 				res.status(201);
 				res.json(race);
@@ -114,7 +126,7 @@ function updateRaceState(req,res){
 			{ $set: {active: active}},
 			{ new: true},
 			function (err,race){
-				if(err)  return handleError(err);
+				if(err)  return res.json({err});
 				console.log("Race started");
 				res.status(201);
 				res.json(race);
@@ -132,7 +144,8 @@ function deleteRace(req,res){
     }
     else {
 			console.log('error deleting race')
-			handleError(req, res, 500);   
+			res.status(500);  
+			res.json({err});
  		}
 	});
 }

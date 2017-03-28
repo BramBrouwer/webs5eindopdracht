@@ -3,7 +3,7 @@ RACE
 
 PLACES (is dit de beste plek om de user te laten zoeken naar places om als waypoint te gebruiken?)
 -/places -- zoek in places met query string variabelen nearby//naam//id//etc return json
-- uitzoeken hoe je ajax call doet // met of zonder jquery? 
+- uitzoeken hoe je ajax call doet // met of zonder jquery?  X 
 - google place api call
 - paginated list return
 - filtering
