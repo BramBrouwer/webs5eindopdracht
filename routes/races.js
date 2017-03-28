@@ -46,6 +46,7 @@ function getRaces(req, res){
 				res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
 				return;
 			}
+			console.log(data);
 			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races'], user: user, races: data });
 			return;
 		})
