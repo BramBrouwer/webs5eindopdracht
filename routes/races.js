@@ -117,7 +117,7 @@ function updateRaceState(req,res){
 				if(err)  return handleError(err);
 				console.log("Race started");
 				res.status(201);
-				res.redirect('/races');
+				res.json(race);
 			})	
 }
 
