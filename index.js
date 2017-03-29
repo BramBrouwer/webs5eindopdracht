@@ -9,7 +9,14 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var session      = require('express-session');
 
-mongoose.connect('mongodb://localhost:27017/restrace');
+
+
+//LOCAL DATABSAE
+//mongoose.connect('mongodb://localhost:27017/restrace');
+
+//MLAB DATABASE
+mongoose.connect('mongodb://admin:admin@ds041506.mlab.com:41506/webs5eindropdracht');
+
 require('./config/passport')(passport); // pass passport for configuration
 
 mongoose.Promise = require('q').Promise;

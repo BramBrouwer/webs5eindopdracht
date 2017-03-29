@@ -6,7 +6,7 @@ ROUTES
 - races/id/waypoints/id/users - GET
 
 EISEN
-- Mlab fixen
+- SOCKET
 - tests
 - documentatie
 - heroku
