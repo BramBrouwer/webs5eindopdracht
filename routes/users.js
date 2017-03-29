@@ -7,6 +7,7 @@ var _ = require('underscore');
 //Models
 User = mongoose.model('User');
 Race = mongoose.model('Race');
+
 //Functions
 function getUsers(req, res){
     var query = {};
@@ -62,36 +63,36 @@ function tagWaypoint(req,res){
 	
 	var userid = req.params.id;
 	var raceid = req.params.raceid;
-	var waypointid = req.params.waypointid;
+	var waypointid = req.body.waypointid;
+	console.log(req.params);
 	var race;
 	var query = {};
 	query._id = raceid;
-	var valWaypointIndex;  //waypoint that we need to edit
-	var validRequest = true; //Will be set to false if the user has already tagged this waypoint
 	var result = Race.find(query);	
 	result
 		.then(data => {
 			race = data[0];
-			//First lets check if the waypoint were looking for actually exists in this race
-			var c  = 0;
-			race.waypoints.forEach(function(waypoint) {
-				
-				if(waypoint._id == waypointid){ 	//Check if race actually contains waypoint were looking for
-					valWaypointIndex = c;			//For some reason saving the waypoint reference in a var and using it to push() later doesnt work so save the index
-					waypoint.users.forEach(function(user) {
-						console.log(user._id);
-						if(user._id == userid){
-							console.log("user has already tagged this waypoint")
-							validRequest = false;	//User id found in this waypoints collection, invalidate request
-						}
-					})
+			for (var i = 0; i < race.waypoints.length; i++){
+				if (race.waypoints[i]._id == waypointid){
+					var waypoint = race.waypoints[i];
 				}
-				c++;
-			});
-			
-			saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res); 		
+			}
+			if(waypoint){
+				waypoint.users.push(userid);
+				race.save().then(savedRace => {
+					console.log("waypoint tagged");
+					res.status(201);
+					return res.json({savedRace});
+				}).fail(err => {
+					res.status(500);
+					return res.json({err});
+				});
+			}else{
+				console.log("User has already tagged this waypoint");
+				res.status(500);
+				return res.json({err: "invalid request"});
+			}
 		})
-		
 		.fail(err => {
 			console.log("error finding race");
 			res.status(500);
@@ -109,7 +110,7 @@ function saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res){
 				race.save().then(savedRace => {
 					console.log("waypoint tagged");
 					res.status(201);
-					return res.json({savedRace});
+					return res.json({savedRace});	
 				})
 				.fail(err => {
 					res.status(500);
@@ -148,7 +149,7 @@ router.route('/:id/races')
 	.get(getUserRaces)
 	.post(addRace);
 
-router.route('/:id/races/:raceid/waypoints/:waypointid')
+router.route('/:id/races/:raceid/waypoints')
 	.post(tagWaypoint);
 
 module.exports = router;

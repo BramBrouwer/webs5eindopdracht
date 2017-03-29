@@ -12,10 +12,10 @@ var session      = require('express-session');
 
 
 //LOCAL DATABSAE
-//mongoose.connect('mongodb://localhost:27017/restrace');
+mongoose.connect('mongodb://localhost:27017/restrace');
 
 //MLAB DATABASE
-mongoose.connect('mongodb://admin:admin@ds041506.mlab.com:41506/webs5eindropdracht');
+//mongoose.connect('mongodb://admin:admin@ds041506.mlab.com:41506/webs5eindropdracht');
 
 require('./config/passport')(passport); // pass passport for configuration
 
