@@ -20,12 +20,10 @@ function getNewRace(req,res){
 
 //Page for adding waypoint to race
 function getNewWaypoint(req,res){
-
 	var user = new User(req.user);
 	if(user.role != "admin") {res.redirect('/');}
 	var id = req.params.id;
-	res.render('admin/races/newwaypoint',{bread: ['Races'],user:user,raceId:id});
-	
+	res.render('admin/races/waypoint/new', {bread: ['Races', 'New Waypoint'], user:user, raceId:id, places: []});
 }
 
 //Get all races TODO: pagination/filtering
@@ -59,14 +57,15 @@ function getRaces(req, res){
 
 //Add new race to database
 function addRace(req, res){
-    if(req.user.role != "admin") {res.redirect('/');}
+    //if(req.user.role != "admin") {res.redirect('/');}
 	
 	var race = new Race(req.body);
 	race.save()
 		.then(savedRace => {
 			console.log("New race created");
 			res.status(201);
-			res.json(savedRace);
+			res.redirect('/races/' + savedRace._id);
+			//res.json(savedRace);
 		})
 		.fail(err => {
 			console.log("error creating race");
@@ -85,6 +84,12 @@ function getRaceForNewWaypoint(req,res){
 	var waypoint = {};
 	waypoint.googleid = req.body.googleid;
 	waypoint.name = req.body.name;
+
+	var newWaypoint =         {
+            "googleid" : req.body.googleid,
+            "name" : req.body.name,
+            "users" : []
+        };
 	
 	var result = Race.find(query);
 	
@@ -92,7 +97,11 @@ function getRaceForNewWaypoint(req,res){
 		.then(data => {
 			race = data[0];
 			var curWaypoints = race.waypoints;
-			createNewWaypoint(waypoint,res,race._id,curWaypoints); 
+			race.waypoints.push(newWaypoint);
+			race.save().then(savedRace => {
+				res.redirect('/races/' + savedRace._id);
+			});
+			//createNewWaypoint(waypoint,res,race._id,curWaypoints); 
 		})
 		.fail(err => {
 			console.log("error getting race");
