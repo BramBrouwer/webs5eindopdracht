@@ -1,15 +1,10 @@
 RACE 
+
+
+
+TODO
 - races/id/waypoints moet bestaan omdat api life   
-
-USER
-- validatie op meerdere keren race joinen/waypoint taggen/waypoint toevoegen aan race
-
-TODO LATER 
-- uitzoeken hoe je kan valideren dat nested collections van je schemas unique waardes hebben <<<<<<<<<<<<<<<
-- aan de hand van header json of html returnen 
-- auth op een andere manier? --> zoals in de race/waypoint edit zooi (1 line)
-- routen overal hetzelfde
-
+- User kan alleen binnen een race taggen die hij gejoined is 
 API key
 AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw
 

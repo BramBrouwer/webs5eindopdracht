@@ -44,7 +44,7 @@
                                     <li class="list-group-item">
                                         <div>
                                         <%= race.waypoints[i].name %> 
-                                            <% if(!JSON.stringify(race.waypoints[i].users).includes(user._id)) { %>
+                                            <% if(JSON.stringify(user.races).includes(race._id) && !JSON.stringify(race.waypoints[i].users).includes(user._id)) { %>
                                                 <form action="/users/<%= user._id%>/races/<%= race._id %>/waypoints/<%= race.waypoints[i]._id%>" method="post">
                                                   <button type="submit" class="btn btn-success btn-sm">Tag</button>
                                                  </form>
