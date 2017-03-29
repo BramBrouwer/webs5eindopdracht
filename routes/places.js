@@ -3,27 +3,22 @@ var router = express.Router();
 var passport = require('passport');
 var request = require('request');
 
-
-
-
 function getPlaces(req,res){
     console.log("Performing api call");
-    
-    request('http://www.google.com', function (error, response, body) {
-        if(error)return res.json({error});
-  console.log('error:', error); // Print the error if one occurred
-  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  console.log('body:', body); // Print the HTML for the Google homepage.
-});
-    
-    
-    res.status(201);
-    res.json({});
+
+    request('https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyAUAwsmT3dKxsJGxw7Ah1OB19aPomdAHvs&location=' + req.body.location + '&radius=' + req.body.radius + '&type=cafe', function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+               	res.render('admin/races/waypoint/new', {bread: ['Races', 'New Waypoint'], user:req.body.user, raceId:req.body.raceid, places: JSON.parse(body).results});
+            }
+            else {
+                console.log("Fout bij ophalen Google Waypoints API");
+            }
+        });
 }
 
 
 router.route('/')
-      .get(getPlaces);
+      .post(getPlaces);
         
 
 
