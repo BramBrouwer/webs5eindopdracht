@@ -3,21 +3,23 @@ RACE
 
 
 TODO
-ROUTES
-- races/id/waypoints moet bestaan omdat api life   
-- user/id/races wss ook
--places
 
-- Alle views aflopen en onnodige shit er uit halen
+ROUTES
+- races/id/waypoints 
+- user/id/races  - POST/GET
+- races/id/waypoints/id/users - GET
+
+EISEN
+- Mlab fixen
 - Requirements doornemen
-- Mlab fixen 
+ - tests
+ - documentatie
+
+BUGS
 - kan een race 2 keer gestart worden?
 - TAG WAYPOINT
      -  User kan alleen binnen een race taggen die hij gejoined is 
      -  Betere return values
- - tests
- - documentatie
-
 
 API key
 AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw
