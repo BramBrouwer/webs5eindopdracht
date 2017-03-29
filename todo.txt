@@ -5,7 +5,7 @@ USER
 - validatie op meerdere keren race joinen/waypoint taggen/waypoint toevoegen aan race
 
 TODO LATER 
-- uitzoeken hoe je kan valideren dat nested collections van je schemas unique waardes hebben 
+- uitzoeken hoe je kan valideren dat nested collections van je schemas unique waardes hebben <<<<<<<<<<<<<<<
 - aan de hand van header json of html returnen 
 - auth op een andere manier? --> zoals in de race/waypoint edit zooi (1 line)
 - routen overal hetzelfde

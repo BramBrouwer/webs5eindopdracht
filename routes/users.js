@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var _ = require('underscore');
 
 
 //Models
 User = mongoose.model('User');
-
+Race = mongoose.model('Race');
 //Functions
 function getUsers(req, res){
     var query = {};
@@ -36,13 +37,22 @@ function addUser(req, res){
 		.fail(err => handleError(req, res, 500, err));
 }
 
+
+
+function tagWaypointNew(req,res){
+	var userid = {_id: req.params.id}
+	var raceid = req.params.raceid;
+	var waypointid = req.params.waypointid;
+	var race;
+	var query = {};
+	query._id = raceid;
+	
+	Race
+}
+
 /*
-O
-Acces a specific users race collection 
-select specific race 
-access its waypoints collection 
-select a specific waypoints
-update the waypoints user array (add the current user)
+	Tag a a waypoint
+	/users/id/races/id/waypoints/id - POST
 */
 function tagWaypoint(req,res){
 	
@@ -52,36 +62,59 @@ function tagWaypoint(req,res){
 	var race;
 	var query = {};
 	query._id = raceid;
-	//Miscchien moet je echt het user object ophalen en daar de id van gebruiken?
-	//Find race by id --> update waypoint record
-	var result = Race.find(query);
+	var valWaypointIndex;  //waypoint that we need to edit
+	var validRequest = true; //Will be set to false if the user has already tagged this waypoint
+	var result = Race.find(query);	
 	result
 		.then(data => {
 			race = data[0];
-			//Find the waypoint with the given waypointid
-			race.waypoints.forEach(function(curWaypoint) {
-    			if(curWaypoint._id == waypointid){
-					curWaypoint.users.push(userid);
-					console.log(curWaypoint.users);
+			//First lets check if the waypoint were looking for actually exists in this race
+			var c  = 0;
+			race.waypoints.forEach(function(waypoint) {
+				
+				if(waypoint._id == waypointid){ 	//Check if race actually contains waypoint were looking for
+					valWaypointIndex = c;			//For some reason saving the waypoint reference in a var and using it to push() later doesnt work so save the index
+					waypoint.users.forEach(function(user) {
+						console.log(user._id);
+						if(user._id == userid){
+							console.log("user has already tagged this waypoint")
+							validRequest = false;	//User id found in this waypoints collection, invalidate request
+						}
+					})
 				}
+				c++;
 			});
-			race.save().then(savedRace => {
-			console.log("race updated");
-			res.status(201);
-			res.json(savedRace);
+			
+			saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res); 		
 		})
+		
 		.fail(err => {
-			console.log("error updating race");
+			console.log("error finding race");
 			res.status(500);
 			res.json({err});
 		});
-	})
-	.fail(err => {
-		console.log("error getting race");
-		res.status(500);
-		res.json({err});
-	});
-	
+}
+
+/*
+If the request is valid, push the given user to the given race.waypoints[index].users array
+*/
+function saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res){
+		
+		if(validRequest){
+				race.waypoints[valWaypointIndex].users.push(userid);
+				race.save().then(savedRace => {
+					console.log("waypoint tagged");
+					res.status(201);
+					return res.json({savedRace});
+				})
+				.fail(err => {
+					res.status(500);
+					res.json({err});
+				});	
+			}else{
+				res.status(500);
+				return res.json({err: "invalid request"});
+			}
 }
 
 //Routes
