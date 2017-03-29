@@ -1,11 +1,22 @@
-RACE 
-
-
-
 TODO
-- races/id/waypoints moet bestaan omdat api life   
-- User kan alleen binnen een race taggen die hij gejoined is 
+
+ROUTES
+- races/id/waypoints 
+- user/id/races  - POST/GET
+- races/id/waypoints/id/users - GET
+
+EISEN
+- SOCKET
+- tests
+- documentatie
+- heroku
 - Requirements doornemen
+
+BUGS
+- kan een race 2 keer gestart worden?
+- TAG WAYPOINT
+     -  User kan alleen binnen een race taggen die hij gejoined is 
+     -  Betere return values
 
 API key
 AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw

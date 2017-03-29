@@ -8,10 +8,14 @@
                     <div class="col-sm-9" style="border-right:2px solid black">
                         <div class="col-xs-3">ID:</div> <div class="col-xs-6"><%= race._id %></div>
                     </div>
-                   <div class="col-sm-3">         
-                    <form action="/races/<%= race._id%>/state" method="post">
+                   <div class="col-sm-3"> 
+                   
+                    <% if(!race.active) { %>
+                            <form action="/races/<%= race._id%>/state" method="post">
                          <button class="btn btn-block btn-xs btn-success" style="border: 0px;" name="active" value="true">Start race</button>
                     </form>
+                        <% }%>        
+                   
                     </div>                    
                 </div>
                 <div class="row">

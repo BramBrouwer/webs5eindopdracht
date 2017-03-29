@@ -10,22 +10,6 @@ User = mongoose.model('User');
 
 //Functions
 
-//Page for creating a new race 
-function getNewRace(req,res){
-	
-	var user = new User(req.user);
-  	if(user.role != "admin") {res.redirect('/');}
-	res.render('admin/races/new',{bread: ['Races'],user:user});
-}
-
-//Page for adding waypoint to race
-function getNewWaypoint(req,res){
-	var user = new User(req.user);
-	if(user.role != "admin") {res.redirect('/');}
-	var id = req.params.id;
-	res.render('admin/races/waypoint/new', {bread: ['Races', 'New Waypoint'], user:user, raceId:id, places: []});
-}
-
 //Get all races TODO: pagination/filtering
 function getRaces(req, res){
 	var user = new User(req.user);
@@ -74,8 +58,39 @@ function addRace(req, res){
 		});
 }
 
-//Get the race object so we can append the new waypoint object to waypoints array
-function getRaceForNewWaypoint(req,res){
+//Page for creating a new race 
+function getNewRace(req,res){
+	var user = new User(req.user);
+  	if(user.role != "admin") {res.redirect('/');}
+	res.render('admin/races/new',{bread: ['Races'],user:user});
+}
+
+//Delete race (via ajax request)
+function deleteRace(req,res){
+	console.log('debug');
+	if(req.user.role != "admin") {res.redirect('/');}
+	Race.remove({ _id: req.params.id }, function(err) {
+    if (!err) {
+           console.log("Race deleted")
+			res.status(201);
+    }
+    else {
+			console.log('error deleting race')
+			res.status(500);  
+			res.json({err});
+ 		}
+	});
+}
+
+//Page for adding waypoint to race
+function getNewWaypoint(req,res){
+	var user = new User(req.user);
+	if(user.role != "admin") {res.redirect('/');}
+	var id = req.params.id;
+	res.render('admin/races/waypoint/new', {bread: ['Races', 'New Waypoint'], user:user, raceId:id, places: []});
+}
+
+function addWaypoint(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	
 	var race;
@@ -101,29 +116,12 @@ function getRaceForNewWaypoint(req,res){
 			race.save().then(savedRace => {
 				res.redirect('/races/' + savedRace._id);
 			});
-			//createNewWaypoint(waypoint,res,race._id,curWaypoints); 
 		})
 		.fail(err => {
 			console.log("error getting race");
 			res.status(500);
 			res.json({err});
 		});
-}
-//Add waypoint to the waypoints array and update race record in the database
-function createNewWaypoint(waypoint,res,raceId,curWaypoints){
-				
-		curWaypoints.push(waypoint);  
-		Race
-		.findByIdAndUpdate(
-			raceId,
-			{ $set: {waypoints: curWaypoints}},
-			{ new: true},
-			function (err,race){
-				if(err) return res.json({err});
-				console.log("waypoint added");
-				res.status(201);
-				res.json(race);
-			})	
 }
 
 //Update race state
@@ -144,55 +142,6 @@ function updateRaceState(req,res){
 			})	
 }
 
-//Delete race (via ajax request)
-function deleteRace(req,res){
-	console.log('debug');
-	if(req.user.role != "admin") {res.redirect('/');}
-	Race.remove({ _id: req.params.id }, function(err) {
-    if (!err) {
-           console.log("Race deleted")
-			res.status(201);
-    }
-    else {
-			console.log('error deleting race')
-			res.status(500);  
-			res.json({err});
- 		}
-	});
-}
-
-function addUser(req, res){
-	var query = {};
-	query._id = req.body.userid;
-	var user = User.find(query);
-	user
-		.then(data => {
-			data = data[0];
-			data.races.push({_id: req.body.raceid, name: req.body.racename});
-			data.save().then(savedUser => {
-				res.redirect('/races/' + req.body.raceid);
-			});
-		})
-		.fail(err => handleError(req, res, 500, err));
-}
-
-function getUserRaces(req, res){
-	var user = new User(req.user);
-	var raceids = [];
-	for(var i=0;i < user.races.length;i++){
-		raceids.push(user.races[i]._id);
-	}
-    var query = {_id: {$in: raceids.map(function(id){ return mongoose.Types.ObjectId(id);})}};
-	var result = Race.find(query);
-	result
-		.then(data => {
-			// We hebben gezocht op id, dus we gaan geen array teruggeven.
-			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races', 'My Races'], user: user, races: data });
-			return;
-		})
-		.fail(err => handleError(req, res, 500, err));
-}
-
 //Routes
 router.route('/')
     .get(getRaces)
@@ -200,18 +149,15 @@ router.route('/')
 
 router.route('/new')
 	.get(getNewRace);
-	
-router.route('/user')
-		.get(getUserRaces);
-router.route('/user/new')
-		.post(addUser);
 
 router.route('/:id')
     .get(getRaces)
 	.delete(deleteRace);
 router.route('/:id/waypoints/new')
-	.get(getNewWaypoint)
-	.post(getRaceForNewWaypoint);
+	.get(getNewWaypoint);
+
+router.route('/:id/waypoints')
+	.post(addWaypoint);
 
 router.route('/:id/state')
 	.post(updateRaceState);
