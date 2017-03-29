@@ -1,7 +1,3 @@
-RACE 
-
-
-
 TODO
 
 ROUTES
@@ -11,9 +7,10 @@ ROUTES
 
 EISEN
 - Mlab fixen
+- tests
+- documentatie
+- heroku
 - Requirements doornemen
- - tests
- - documentatie
 
 BUGS
 - kan een race 2 keer gestart worden?
