@@ -5,6 +5,8 @@ RACE
 TODO
 - races/id/waypoints moet bestaan omdat api life   
 - User kan alleen binnen een race taggen die hij gejoined is 
+- Requirements doornemen
+
 API key
 AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw
 
