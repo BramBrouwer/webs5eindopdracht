@@ -72,9 +72,11 @@ function tagWaypoint(req,res){
 	result
 		.then(data => {
 			race = data[0];
-			console.log('1');
-			var waypoint = race.waypoints.find(waypointid);
-			console.log('2');
+			for (var i = 0; i < race.waypoints.length; i++){
+				if (race.waypoints[i]._id == waypointid){
+					var waypoint = race.waypoints[i];
+				}
+			}
 			if(waypoint){
 				waypoint.users.push(userid);
 				race.save().then(savedRace => {
