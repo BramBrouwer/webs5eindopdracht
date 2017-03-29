@@ -3,12 +3,20 @@ RACE
 
 
 TODO
+ROUTES
 - races/id/waypoints moet bestaan omdat api life   
-- user/id/races
-- User kan alleen binnen een race taggen die hij gejoined is 
-- Requirements doornemen
+- user/id/races wss ook
+-places
+
 - Alle views aflopen en onnodige shit er uit halen
+- Requirements doornemen
 - Mlab fixen 
+- kan een race 2 keer gestart worden?
+- TAG WAYPOINT
+     -  User kan alleen binnen een race taggen die hij gejoined is 
+     -  Betere return values
+ - tests
+ - documentatie
 
 
 API key
