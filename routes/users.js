@@ -37,19 +37,22 @@ function addUser(req, res){
 		.fail(err => handleError(req, res, 500, err));
 }
 
-
-
-function tagWaypointNew(req,res){
-	var userid = {_id: req.params.id}
-	var raceid = req.params.raceid;
-	var waypointid = req.params.waypointid;
-	var race;
-	var query = {};
-	query._id = raceid;
-	
-	Race
+function getUserRaces(req, res){
+	var user = new User(req.user);
+	var raceids = [];
+	for(var i=0;i < user.races.length;i++){
+		raceids.push(user.races[i]._id);
+	}
+    var query = {_id: {$in: raceids.map(function(id){ return mongoose.Types.ObjectId(id);})}};
+	var result = Race.find(query);
+	result
+		.then(data => {
+			// We hebben gezocht op id, dus we gaan geen array teruggeven.
+			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races', 'My Races'], user: user, races: data });
+			return;
+		})
+		.fail(err => handleError(req, res, 500, err));
 }
-
 
 /*
 	Tag a a waypoint
@@ -118,22 +121,6 @@ function saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res){
 			}
 }
 
-function getUserRaces(req, res){
-	var user = new User(req.user);
-	var raceids = [];
-	for(var i=0;i < user.races.length;i++){
-		raceids.push(user.races[i]._id);
-	}
-    var query = {_id: {$in: raceids.map(function(id){ return mongoose.Types.ObjectId(id);})}};
-	var result = Race.find(query);
-	result
-		.then(data => {
-			// We hebben gezocht op id, dus we gaan geen array teruggeven.
-			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races', 'My Races'], user: user, races: data });
-			return;
-		})
-		.fail(err => handleError(req, res, 500, err));
-}
 function addRace(req, res){
 	var query = {};
 	query._id = req.body.userid;

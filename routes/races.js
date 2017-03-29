@@ -10,21 +10,6 @@ User = mongoose.model('User');
 
 //Functions
 
-//Page for creating a new race 
-function getNewRace(req,res){
-	var user = new User(req.user);
-  	if(user.role != "admin") {res.redirect('/');}
-	res.render('admin/races/new',{bread: ['Races'],user:user});
-}
-
-//Page for adding waypoint to race
-function getNewWaypoint(req,res){
-	var user = new User(req.user);
-	if(user.role != "admin") {res.redirect('/');}
-	var id = req.params.id;
-	res.render('admin/races/waypoint/new', {bread: ['Races', 'New Waypoint'], user:user, raceId:id, places: []});
-}
-
 //Get all races TODO: pagination/filtering
 function getRaces(req, res){
 	var user = new User(req.user);
@@ -71,6 +56,38 @@ function addRace(req, res){
 			res.status(500);
 			res.json({err});
 		});
+}
+
+//Page for creating a new race 
+function getNewRace(req,res){
+	var user = new User(req.user);
+  	if(user.role != "admin") {res.redirect('/');}
+	res.render('admin/races/new',{bread: ['Races'],user:user});
+}
+
+//Delete race (via ajax request)
+function deleteRace(req,res){
+	console.log('debug');
+	if(req.user.role != "admin") {res.redirect('/');}
+	Race.remove({ _id: req.params.id }, function(err) {
+    if (!err) {
+           console.log("Race deleted")
+			res.status(201);
+    }
+    else {
+			console.log('error deleting race')
+			res.status(500);  
+			res.json({err});
+ 		}
+	});
+}
+
+//Page for adding waypoint to race
+function getNewWaypoint(req,res){
+	var user = new User(req.user);
+	if(user.role != "admin") {res.redirect('/');}
+	var id = req.params.id;
+	res.render('admin/races/waypoint/new', {bread: ['Races', 'New Waypoint'], user:user, raceId:id, places: []});
 }
 
 function addWaypoint(req,res){
@@ -123,23 +140,6 @@ function updateRaceState(req,res){
 				res.status(201);
 				res.json(race);
 			})	
-}
-
-//Delete race (via ajax request)
-function deleteRace(req,res){
-	console.log('debug');
-	if(req.user.role != "admin") {res.redirect('/');}
-	Race.remove({ _id: req.params.id }, function(err) {
-    if (!err) {
-           console.log("Race deleted")
-			res.status(201);
-    }
-    else {
-			console.log('error deleting race')
-			res.status(500);  
-			res.json({err});
- 		}
-	});
 }
 
 //Routes
