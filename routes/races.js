@@ -12,7 +12,6 @@ User = mongoose.model('User');
 
 //Page for creating a new race 
 function getNewRace(req,res){
-	
 	var user = new User(req.user);
   	if(user.role != "admin") {res.redirect('/');}
 	res.render('admin/races/new',{bread: ['Races'],user:user});
@@ -74,8 +73,7 @@ function addRace(req, res){
 		});
 }
 
-//Get the race object so we can append the new waypoint object to waypoints array
-function getRaceForNewWaypoint(req,res){
+function addWaypoint(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	
 	var race;
@@ -101,29 +99,12 @@ function getRaceForNewWaypoint(req,res){
 			race.save().then(savedRace => {
 				res.redirect('/races/' + savedRace._id);
 			});
-			//createNewWaypoint(waypoint,res,race._id,curWaypoints); 
 		})
 		.fail(err => {
 			console.log("error getting race");
 			res.status(500);
 			res.json({err});
 		});
-}
-//Add waypoint to the waypoints array and update race record in the database
-function createNewWaypoint(waypoint,res,raceId,curWaypoints){
-				
-		curWaypoints.push(waypoint);  
-		Race
-		.findByIdAndUpdate(
-			raceId,
-			{ $set: {waypoints: curWaypoints}},
-			{ new: true},
-			function (err,race){
-				if(err) return res.json({err});
-				console.log("waypoint added");
-				res.status(201);
-				res.json(race);
-			})	
 }
 
 //Update race state
@@ -161,38 +142,6 @@ function deleteRace(req,res){
 	});
 }
 
-function addUser(req, res){
-	var query = {};
-	query._id = req.body.userid;
-	var user = User.find(query);
-	user
-		.then(data => {
-			data = data[0];
-			data.races.push({_id: req.body.raceid, name: req.body.racename});
-			data.save().then(savedUser => {
-				res.redirect('/races/' + req.body.raceid);
-			});
-		})
-		.fail(err => handleError(req, res, 500, err));
-}
-
-function getUserRaces(req, res){
-	var user = new User(req.user);
-	var raceids = [];
-	for(var i=0;i < user.races.length;i++){
-		raceids.push(user.races[i]._id);
-	}
-    var query = {_id: {$in: raceids.map(function(id){ return mongoose.Types.ObjectId(id);})}};
-	var result = Race.find(query);
-	result
-		.then(data => {
-			// We hebben gezocht op id, dus we gaan geen array teruggeven.
-			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races', 'My Races'], user: user, races: data });
-			return;
-		})
-		.fail(err => handleError(req, res, 500, err));
-}
-
 //Routes
 router.route('/')
     .get(getRaces)
@@ -200,18 +149,15 @@ router.route('/')
 
 router.route('/new')
 	.get(getNewRace);
-	
-router.route('/user')
-		.get(getUserRaces);
-router.route('/user/new')
-		.post(addUser);
 
 router.route('/:id')
     .get(getRaces)
 	.delete(deleteRace);
 router.route('/:id/waypoints/new')
-	.get(getNewWaypoint)
-	.post(getRaceForNewWaypoint);
+	.get(getNewWaypoint);
+
+router.route('/:id/waypoints')
+	.post(addWaypoint);
 
 router.route('/:id/state')
 	.post(updateRaceState);
