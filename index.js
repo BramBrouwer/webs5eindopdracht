@@ -32,22 +32,22 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 //require('./routes/login.js')(passport); // Try to pass passport and app AFTER serting up passport/flash
-app.use(function (req, res, next) {
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-    if (req.path =='/login' || req.path == '/login/google' || req.path == '/login/google/callback')
-        return next();
-    // if they aren't redirect them to the home page
-    res.redirect('/login');
-});
+// app.use(function (req, res, next) {
+//     // if user is authenticated in the session, carry on
+//     if (req.isAuthenticated())
+//         return next();
+//     if (req.path.startsWith('/login'))
+//         return next();
+//     // if they aren't redirect them to the home page
+//     res.redirect('/login');
+// });
 //Routes
 app.use('/', require('./routes/home.js'));
 app.use('/login', require('./routes/login.js'));
 app.use('/races', require('./routes/races.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/profile', require('./routes/profile.js'));
-
+app.use('/places',require('./routes/places.js'))
 
 app.listen(process.env.PORT || 3000);
 module.exports = app;

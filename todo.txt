@@ -1,0 +1,17 @@
+RACE 
+
+
+
+TODO
+- races/id/waypoints moet bestaan omdat api life   
+- User kan alleen binnen een race taggen die hij gejoined is 
+- Requirements doornemen
+
+API key
+AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw
+
+CLIENT ID
+505802495786-fr9e77vv2q7ufa0thvmvvd6u1bqocjgd.apps.googleusercontent.com
+
+Secret 
+dlCzAaKuvK7PpHHWa5zgN2Bq
