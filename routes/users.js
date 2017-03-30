@@ -1,15 +1,9 @@
 module.exports = function (app){ 
-    //app.io.sockets.emit('socket.io sucessfully passed from app to router');
-
 
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var _ = require('underscore');
-//var io = require('socket.io')();  
-//var io = require('socket.io')(app);
-
-
 
 //Models
 User = mongoose.model('User');
@@ -87,7 +81,7 @@ function tagWaypoint(req,res){
 			if(waypoint){
 				waypoint.users.push(userid);
 				race.save().then(savedRace => {
-					logRace(userid,waypoint.name);  //Log waypoint name and userid to socket
+					logRace(userid,waypoint.name,race._id);  //Log waypoint name and userid to socket
 					console.log("waypoint tagged");
 					res.status(201);
 					return res.json({savedRace});
@@ -150,9 +144,10 @@ function addRace(req, res){
 /*
 Use emit identifier with raceid so people only get relevant logs 
 Actually show logs in race view 
+TODO: geef de process.env.PORT door aan view
 */
-function logRace(userid,waypointname){
-		app.io.sockets.emit('checkinLogged',{msg: "User: " + userid + " checked in at: "+ waypointname});
+function logRace(userid,waypointname,raceid){
+		app.io.sockets.emit('checkinLogged'+raceid,{msg: "User: " + userid + " checked in at: "+ waypointname});
 }
 
 //Routes

@@ -70,7 +70,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io('http://localhost:3000');
-  socket.on('checkinLogged', function (data) {
+  socket.on("checkinLogged"+"<%= race._id%>", function (data) {
     console.log(data.msg);
   });
 </script>
