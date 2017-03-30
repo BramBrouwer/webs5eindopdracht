@@ -1,8 +1,9 @@
+module.exports = function (app){ 
+
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var _ = require('underscore');
-
 
 //Models
 User = mongoose.model('User');
@@ -80,6 +81,7 @@ function tagWaypoint(req,res){
 			if(waypoint){
 				waypoint.users.push(userid);
 				race.save().then(savedRace => {
+					logRace(userid,waypoint.name,race._id);  //Log waypoint name and userid to socket
 					console.log("waypoint tagged");
 					res.status(201);
 					return res.json({savedRace});
@@ -100,27 +102,30 @@ function tagWaypoint(req,res){
 		});
 }
 
-/*
-If the request is valid, push the given user to the given race.waypoints[index].users array
-*/
-function saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res){
+// /*
+// If the request is valid, push the given user to the given race.waypoints[index].users array
+// */
+// function saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res){
 		
-		if(validRequest){
-				race.waypoints[valWaypointIndex].users.push(userid);
-				race.save().then(savedRace => {
-					console.log("waypoint tagged");
-					res.status(201);
-					return res.json({savedRace});	
-				})
-				.fail(err => {
-					res.status(500);
-					res.json({err});
-				});	
-			}else{
-				res.status(500);
-				return res.json({err: "invalid request"});
-			}
-}
+// 		if(validRequest){
+// 				race.waypoints[valWaypointIndex].users.push(userid);
+// 				race.save().then(savedRace => {
+// 					console.log("waypoint tagged");
+// 					logRace(userid);
+// 					res.status(201);
+// 					return res.json({savedRace});	
+// 				})
+// 				.fail(err => {
+// 					res.status(500);
+// 					res.json({err});
+// 				});	
+// 			}else{
+// 				res.status(500);
+// 				return res.json({err: "invalid request"});
+// 			}
+// }
+
+
 
 function addRace(req, res){
 	var query = {};
@@ -135,6 +140,14 @@ function addRace(req, res){
 			});
 		})
 		.fail(err => handleError(req, res, 500, err));
+}
+/*
+Use emit identifier with raceid so people only get relevant logs 
+Actually show logs in race view 
+TODO: geef de process.env.PORT door aan view
+*/
+function logRace(userid,waypointname,raceid){
+		app.io.sockets.emit('checkinLogged'+raceid,{msg: "User: " + userid + " checked in at: "+ waypointname});
 }
 
 //Routes
@@ -152,4 +165,7 @@ router.route('/:id/races')
 router.route('/:id/races/:raceid/waypoints')
 	.post(tagWaypoint);
 
-module.exports = router;
+router.route('/log')
+	.get(logRace);
+return router;
+}

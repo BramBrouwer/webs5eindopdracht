@@ -1,5 +1,3 @@
-var express = require('express');
-var app = express();
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -9,6 +7,14 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var session      = require('express-session');
 
+var http = require('http');
+var express = require('express'),
+    app = module.exports.app = express();
+
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);  //pass a http.Server instance
+app.io = io;
+server.listen(process.env.PORT || 3000); 
 
 
 //LOCAL DATABSAE
@@ -52,9 +58,13 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.use('/', require('./routes/home.js'));
 app.use('/login', require('./routes/login.js'));
 app.use('/races', require('./routes/races.js'));
-app.use('/users', require('./routes/users.js'));
+app.use('/users', require('./routes/users.js')(app));
 app.use('/profile', require('./routes/profile.js'));
-app.use('/places',require('./routes/places.js'))
+app.use('/places',require('./routes/places.js'));
 
-app.listen(process.env.PORT || 3000);
-module.exports = app;
+
+io.on('connection', function (socket) {
+  console.log('log connected');
+});
+
+//module.exports = app;

@@ -1,23 +1,34 @@
 TODO
-
-ROUTES
-- races/id/waypoints 
-- user/id/races  - POST/GET
-- races/id/waypoints/id/users - GET
-
-EISEN
-- SOCKET
+- shit die alec kan doen
+    -user races werkt niet meer
+     - waypoin toevoegen aan race werkt niet meer (Cannot POST /races/58da4a5a7350a91548a4caeb/waypoints/new)
+     - op de race drukken in races overzicht is een post? (race 1 is een link in all races overzicht van user)
+     - user kan weer meerdere keren dezelfde checkpoint checken (knop voor waypoints is nu altijd enabled om dit makkelijk te kunnen testen
+     - race joinen werkt niet meer (Cannot POST /races/user/new)
+     -tests
+     
+ALGEMENE EISEN
 - tests
 - documentatie
 - heroku
 - Requirements doornemen
 
-BUGS
+BUGS TO CHECK 
 - kan een race 2 keer gestart worden?
-- TAG WAYPOINT
-     -  User kan alleen binnen een race taggen die hij gejoined is 
-     -  Betere return values
+- kan een user alleen binnen een race taggen die hij gejoined is ?
+- volgesmij klopt de socket nog niet als je in heroku draait (ook in de view env.process.port doorgeven via route)
 
+
+
+
+
+
+
+
+
+
+
+////API DOC
 API key
 AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw
 

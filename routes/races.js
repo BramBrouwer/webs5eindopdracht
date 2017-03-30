@@ -142,6 +142,14 @@ function updateRaceState(req,res){
 			})	
 }
 
+function logRaceInfo(req,res){
+	 var socket = io(process.env.PORT||'http://localhost:3000');
+  	socket.on('checkinLogged', function (data) {
+    console.log(data.msg);
+    socket.emit('checkinLogged', { user: 'user', msg: ' checked in' });
+  });
+}
+
 //Routes
 router.route('/')
     .get(getRaces)
