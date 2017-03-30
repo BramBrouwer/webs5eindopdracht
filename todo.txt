@@ -2,8 +2,11 @@ TODO
 - Views opnieuw
 - Socket fixen 
 - ???
-- shit die alec kan doen 
-
+- shit die alec kan doen
+    -user races werkt niet meer
+     - waypoin toevoegen aan race werkt niet meer 
+     - opd e race drukken in races overzicht is een post?
+     
 
 ROUTES
 - races/id/waypoints 
@@ -12,6 +15,11 @@ ROUTES
 
 EISEN
 - SOCKET
+User navigeert naar race info. 
+Er wordt een call gedaan naar een bepaalde route (race/log)
+Er wordt een socket connectie opengezet die wordt aangeroepen als een user zich tagt binnen een bepaalde race
+
+
 - tests
 - documentatie
 - heroku
