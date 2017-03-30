@@ -1,5 +1,3 @@
-var express = require('express');
-var app = express();
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -9,6 +7,13 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var session      = require('express-session');
 
+var http = require('http');
+var express = require('express'),
+    app = module.exports.app = express();
+
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);  //pass a http.Server instance
+server.listen(process.env.PORT || 3000); 
 
 
 //LOCAL DATABSAE
@@ -54,7 +59,16 @@ app.use('/login', require('./routes/login.js'));
 app.use('/races', require('./routes/races.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/profile', require('./routes/profile.js'));
-app.use('/places',require('./routes/places.js'))
+app.use('/places',require('./routes/places.js'));
 
-app.listen(process.env.PORT || 3000);
-module.exports = app;
+
+//app.listen(process.env.PORT || 3000);
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+
+//module.exports = app;

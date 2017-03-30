@@ -142,6 +142,10 @@ function updateRaceState(req,res){
 			})	
 }
 
+function logRaceInfo(req,res){
+	
+}
+
 //Routes
 router.route('/')
     .get(getRaces)

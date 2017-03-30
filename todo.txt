@@ -1,4 +1,9 @@
 TODO
+- Views opnieuw
+- Socket fixen 
+- ???
+- shit die alec kan doen 
+
 
 ROUTES
 - races/id/waypoints 
