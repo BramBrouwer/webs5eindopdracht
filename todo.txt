@@ -1,10 +1,10 @@
 TODO
 - shit die alec kan doen
     -user races werkt niet meer
-     - waypoin toevoegen aan race werkt niet meer (Cannot POST /races/58da4a5a7350a91548a4caeb/waypoints/new)
-     - op de race drukken in races overzicht is een post? (race 1 is een link in all races overzicht van user)
-     - user kan weer meerdere keren dezelfde checkpoint checken (knop voor waypoints is nu altijd enabled om dit makkelijk te kunnen testen
-     - race joinen werkt niet meer (Cannot POST /races/user/new)
+      waypoint toevoegen aan race werkt niet meer (Cannot POST /races/58da4a5a7350a91548a4caeb/waypoints/new)
+      op de race drukken in races overzicht is een post? (race 1 is een link in all races overzicht van user)
+      user kan weer meerdere keren dezelfde checkpoint checken (knop voor waypoints is nu altijd enabled om dit makkelijk te kunnen testen
+      race joinen werkt niet meer (Cannot POST /races/user/new)
      -tests
      
 ALGEMENE EISEN

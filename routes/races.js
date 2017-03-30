@@ -87,7 +87,7 @@ function getNewWaypoint(req,res){
 	var user = new User(req.user);
 	if(user.role != "admin") {res.redirect('/');}
 	var id = req.params.id;
-	res.render('admin/races/waypoint/new', {bread: ['Races', 'New Waypoint'], user:user, raceId:id, places: []});
+	res.render('admin/races/waypoint/new', {bread: ['Races', 'New Waypoint'], user:user, raceid:id, places: []});
 }
 
 function addWaypoint(req,res){
