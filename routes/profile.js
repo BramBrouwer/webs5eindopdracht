@@ -11,12 +11,37 @@ Race = mongoose.model('Race');
 //API
 function getProfile(req, res){
     var user = new User(req.user);
-    res.render('profile.ejs', { title: 'Profile', bread: ['Profile'],  user : user });
+    
+    if(isJsonRequest(req)){
+        if(req.user == null){
+            res.json({err: "No user given"})
+        }else{
+            res.json({user: req.user});
+        }
+        console.log(req.user);
+    }else{   
+        res.render('profile.ejs', { title: 'Profile', bread: ['Profile'],  user : user });
+    }
 }
 
 function logout(req, res) {
-    req.logout();
-    res.redirect('/');
+    
+    if(isJsonRequest(req)){
+        req.logout();
+        res.json({msg: "Logged out"});
+    }else{
+         req.logout();
+         res.redirect('/');
+    }
+    
+  
+}
+
+function isJsonRequest(req){
+      if(req.accepts('html') == 'html'){
+          return false;
+      }
+      return true;
 }
 
 //Routes

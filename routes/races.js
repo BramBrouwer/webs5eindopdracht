@@ -25,12 +25,21 @@ function getRaces(req, res){
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
 			if(req.params.id){
 				data = data[0];
+				if(isJsonRequest(req)){
+				res.json({response: data});
+				}else{
 				res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
 				return;
+				}
 			}
-			console.log(data);
-			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races'], user: user, races: data });
-			return;
+			if(isJsonRequest(req)){
+				res.json({response: data});
+			}else{
+				console.log(data);
+				res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races'], user: user, races: data });
+				return;
+			}
+			
 		})
 		.fail(err => {
 			console.log("error finding races");
@@ -48,8 +57,11 @@ function addRace(req, res){
 		.then(savedRace => {
 			console.log("New race created");
 			res.status(201);
-			res.redirect('/races/' + savedRace._id);
-			//res.json(savedRace);
+			if(isJsonRequest(req)){
+				res.json({response: savedRace});
+			}else{
+				res.redirect('/races/' + savedRace._id);
+			}
 		})
 		.fail(err => {
 			console.log("error creating race");
@@ -71,8 +83,15 @@ function deleteRace(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	Race.remove({ _id: req.params.id }, function(err) {
     if (!err) {
-           console.log("Race deleted")
-			res.status(201);
+		if(isJsonRequest(req)){
+			res.status(200);
+			res.json({response : "Race deleted"})
+		}
+		else{
+			console.log("Race deleted")
+			res.status(200);
+			res.json({response : "Race deleted (res.redirect werkt niet na een delete request en handmatig method naar GET veranderen werkt ook niet.)"})
+		}
     }
     else {
 			console.log('error deleting race')
@@ -114,13 +133,24 @@ function addWaypoint(req,res){
 			var curWaypoints = race.waypoints;
 			race.waypoints.push(newWaypoint);
 			race.save().then(savedRace => {
-				res.redirect('/races/' + savedRace._id);
+			console.log('waypoint added');
+				if(isJsonRequest(req)){
+					res.json({response : savedRace})
+				}else{
+					res.redirect('/races/' + savedRace._id);
+				}
 			});
 		})
 		.fail(err => {
 			console.log("error getting race");
 			res.status(500);
+			if(isJsonRequest(req)){
 			res.json({err});
+			}else{
+				res.redirect('/races/' + race._id);
+			}
+			
+		
 		});
 }
 
@@ -128,6 +158,7 @@ function addWaypoint(req,res){
 function updateRaceState(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	var active = req.body.active;
+	console.log(active);
 	var raceId = req.params.id;
 	Race
 		.findByIdAndUpdate(
@@ -137,8 +168,13 @@ function updateRaceState(req,res){
 			function (err,race){
 				if(err)  return res.json({err});
 				console.log("Race started");
-				res.status(201);
-				res.json(race);
+				if(isJsonRequest(req)){
+					res.status(201);
+					res.json({response: race});
+				}else{
+					res.redirect(req.get('referer'));
+				}
+				
 			})	
 }
 
@@ -148,6 +184,16 @@ function logRaceInfo(req,res){
     console.log(data.msg);
     socket.emit('checkinLogged', { user: 'user', msg: ' checked in' });
   });
+}
+
+/*
+Always false if the 'accepts
+*/
+function isJsonRequest(req){
+      if(req.accepts('html') == 'html'){
+          return false;
+      }
+      return true;
 }
 
 //Routes
