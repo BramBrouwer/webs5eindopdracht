@@ -186,9 +186,6 @@ function logRaceInfo(req,res){
   });
 }
 
-/*
-Always false if the 'accepts
-*/
 function isJsonRequest(req){
       if(req.accepts('html') == 'html'){
           return false;
