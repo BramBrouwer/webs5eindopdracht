@@ -10,7 +10,7 @@ User = mongoose.model('User');
 
 //Functions
 
-//Get all races TODO: pagination/filtering
+//Get all races/a specific race
 function getRaces(req, res){
 	var user = new User(req.user);
 	var query = {};
@@ -47,6 +47,36 @@ function getRaces(req, res){
 			res.json({err});
 		});
 }
+
+//Get waypoints for a specific race 
+function getWaypointsForRace(req,res){
+	var user = new User(req.user);
+	var query = {};
+	if(req.params.id){
+		query._id = req.params.id;
+	}
+	var result = Race.find(query);
+		result
+		.then(data => {
+			// We hebben gezocht op id, dus we gaan geen array teruggeven.
+			if(req.params.id){
+				data = data[0];
+				if(isJsonRequest(req)){
+					res.json({response: data.waypoints});
+				}else{
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+				return;
+				}
+			}
+		})
+		.fail(err => {
+			console.log("error finding race");
+			res.status(500);
+			res.json({err});
+		});
+}
+
+
 
 //Add new race to database
 function addRace(req, res){
@@ -178,6 +208,7 @@ function updateRaceState(req,res){
 			})	
 }
 
+//Socket call when a waypoint is checked
 function logRaceInfo(req,res){
 	 var socket = io(process.env.PORT||'http://localhost:3000');
   	socket.on('checkinLogged', function (data) {
@@ -208,6 +239,7 @@ router.route('/:id/waypoints/new')
 	.get(getNewWaypoint);
 
 router.route('/:id/waypoints')
+	.get(getWaypointsForRace)
 	.post(addWaypoint);
 
 router.route('/:id/state')
