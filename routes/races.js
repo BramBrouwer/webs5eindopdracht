@@ -10,7 +10,7 @@ User = mongoose.model('User');
 
 //Functions
 
-//Get all races TODO: pagination/filtering
+//Get all races/a specific race
 function getRaces(req, res){
 	var user = new User(req.user);
 	var query = {};
@@ -19,7 +19,6 @@ function getRaces(req, res){
 	}
 
 	var result = Race.find(query);
-
 	result
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
@@ -47,6 +46,74 @@ function getRaces(req, res){
 			res.json({err});
 		});
 }
+
+
+
+//Get waypoints for a specific race 
+function getWaypointsForRace(req,res){
+	var user = new User(req.user);
+	var query = {};
+	if(req.params.id){
+		query._id = req.params.id;
+	}
+	var result = Race.find(query);
+		result
+		.then(data => {
+			// We hebben gezocht op id, dus we gaan geen array teruggeven.
+			
+				data = data[0];
+				if(isJsonRequest(req)){
+					res.json({response: data.waypoints});
+				}else{
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+				return;
+				}
+			
+		})
+		.fail(err => {
+			console.log("error finding race");
+			res.status(500);
+			res.json({err});
+		});
+}
+
+function getUsersForWaypoint(req,res){
+	var user = new User(req.user);
+	var waypointid = req.params.waypointid;
+	var query = {};
+	if(req.params.id){
+		query._id = req.params.id;
+	}
+	var result = Race.find(query);
+		result
+		.then(data => {
+			
+				data = data[0];
+	
+				for (var i = 0; i < data.waypoints.length; i++){
+					console.log(data.waypoints[i]._id);
+					console.log(waypointid);
+				if (data.waypoints[i]._id == waypointid){
+					var waypoint = data.waypoints[i];
+				}
+			}	
+		
+				if(isJsonRequest(req)){
+					res.json({response: waypoint.users});
+				}else{
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+				return;
+				}
+			
+		})
+		.fail(err => {
+			console.log("error finding race");
+			res.status(500);
+			res.json({err});
+		});
+}
+
+
 
 //Add new race to database
 function addRace(req, res){
@@ -83,13 +150,12 @@ function deleteRace(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	Race.remove({ _id: req.params.id }, function(err) {
     if (!err) {
+		res.status(200);
 		if(isJsonRequest(req)){
-			res.status(200);
 			res.json({response : "Race deleted"})
 		}
 		else{
 			console.log("Race deleted")
-			res.status(200);
 			res.json({response : "Race deleted (res.redirect werkt niet na een delete request en handmatig method naar GET veranderen werkt ook niet.)"})
 		}
     }
@@ -135,6 +201,7 @@ function addWaypoint(req,res){
 			race.save().then(savedRace => {
 			console.log('waypoint added');
 				if(isJsonRequest(req)){
+					res.status(200);
 					res.json({response : savedRace})
 				}else{
 					res.redirect('/races/' + savedRace._id);
@@ -169,7 +236,7 @@ function updateRaceState(req,res){
 				if(err)  return res.json({err});
 				console.log("Race started");
 				if(isJsonRequest(req)){
-					res.status(201);
+					res.status(200);
 					res.json({response: race});
 				}else{
 					res.redirect(req.get('referer'));
@@ -178,6 +245,7 @@ function updateRaceState(req,res){
 			})	
 }
 
+//Socket call when a waypoint is checked
 function logRaceInfo(req,res){
 	 var socket = io(process.env.PORT||'http://localhost:3000');
   	socket.on('checkinLogged', function (data) {
@@ -204,11 +272,16 @@ router.route('/new')
 router.route('/:id')
     .get(getRaces)
 	.delete(deleteRace);
+	
 router.route('/:id/waypoints/new')
 	.get(getNewWaypoint);
 
 router.route('/:id/waypoints')
+	.get(getWaypointsForRace)
 	.post(addWaypoint);
+	
+router.route('/:id/waypoints/:waypointid/users')
+	.get(getUsersForWaypoint);
 
 router.route('/:id/state')
 	.post(updateRaceState);
