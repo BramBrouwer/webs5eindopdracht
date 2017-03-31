@@ -1,5 +1,8 @@
 TODO
-- json/html toevoegen aan 
+- /race/wayponts - GET
+- user/race/waypoints - GET
+- population op races json 
+
      
 ALGEMENE EISEN
 - tests
@@ -17,10 +20,9 @@ BUGS TO CHECK
 
 
 NICE TO HAVE 
-- user view zodat hier ok html gereturned kan worden 
 - user redirecten naar home na post user (html response)
-
-
+- json return values voor login 
+- error callbacks ook json/html 
 
 
 
