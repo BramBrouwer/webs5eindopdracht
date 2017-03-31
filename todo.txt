@@ -1,29 +1,21 @@
 TODO
-- population op alle relevante json return values 
+
+POPULATION
+ op alle relevante json return values voor deze routes V
         - race/id/waypoints
         - race/id
-        - races
-        
-- race/waypoint/users - GET 
-     
+        - races     
 
 ALGEMENE EISEN
 - tests
 - documentatie
-- heroku
 - Requirements doornemen wat missen we nog, kunnen we makkelijk beter doen, etc.
-
 
 BUGS TO CHECK 
 - kan een user alleen binnen een race taggen die hij gejoined is ?
 - volgesmij klopt de socket nog niet als je in heroku draait (ook in de view env.process.port doorgeven via route)
 
-
-
-
-
 NICE TO HAVE 
-- user redirecten naar home na post user (html response)
 - json return values voor login 
 - error callbacks ook json/html 
 
