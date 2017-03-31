@@ -15,9 +15,8 @@ function getLoginSuccess(req,res){
           res.redirect('/');
     }  
 }
+
 //Login failure callback
-    //werkt flash message nog?
-    // kan je deze in de json meegeven?
 function getloginFailure(req,res){
     res.status(500);
     if(isJsonRequest(req)){
@@ -27,24 +26,18 @@ function getloginFailure(req,res){
     }
 }
 
-
 function isJsonRequest(req){
       if(req.accepts('html') == 'html'){
           return false;
       }
       return true;
 }
-
-
-
-
-
-//Routes
+//Local login
 router.route('/')
     .get(getHome)
     .post(passport.authenticate('local', {
         successRedirect : 'login/success', // redirect to the secure profile section
-        failureRedirect : '/login/failure', // redirect back to the signup page if there is an error
+        failureRedirect : 'login/failure', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
 
@@ -54,16 +47,18 @@ router.route('/google')
         scope : ['profile', 'email'] 
     }));
 
-    // Google login callback
+// Google login callback
 router.route('/google/callback')
     .get(passport.authenticate('google', {
                 successRedirect : '/',
                 failureRedirect : '/'
         }));
         
+//Local login success   
 router.route('/success')
       .get(getLoginSuccess);
 
+//Local login failure
 router.route('/failure')
     .get(getloginFailure);
 
