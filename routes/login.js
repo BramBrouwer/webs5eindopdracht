@@ -14,7 +14,7 @@ router.route('/')
 //Local login
 router.route('/')
     .post(passport.authenticate('local', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/', // redirect to the secure profile section
         failureRedirect : '/', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -28,7 +28,7 @@ router.route('/google')
     // Google login callback
 router.route('/google/callback')
     .get(passport.authenticate('google', {
-                successRedirect : '/profile',
+                successRedirect : '/',
                 failureRedirect : '/'
         }));
 

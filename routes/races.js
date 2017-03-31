@@ -91,6 +91,7 @@ function getNewWaypoint(req,res){
 }
 
 function addWaypoint(req,res){
+	console.log(passport);
 	if(req.user.role != "admin") {res.redirect('/');}
 	
 	var race;
@@ -128,10 +129,10 @@ function addWaypoint(req,res){
 function updateRaceState(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	var active = req.body.active;
-	var raceId = req.params.id;
+	var raceid = req.params.id;
 	Race
 		.findByIdAndUpdate(
-			raceId,
+			raceid,
 			{ $set: {active: active}},
 			{ new: true},
 			function (err,race){
