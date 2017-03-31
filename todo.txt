@@ -1,9 +1,12 @@
 TODO
-- /race/wayponts - GET
-- user/race/waypoints - GET
-- population op races json 
-
+- population op alle relevante json return values 
+        - race/id/waypoints
+        - race/id
+        - races
+        
+- race/waypoint/users - GET 
      
+
 ALGEMENE EISEN
 - tests
 - documentatie

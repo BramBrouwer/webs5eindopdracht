@@ -19,7 +19,6 @@ function getRaces(req, res){
 	}
 
 	var result = Race.find(query);
-
 	result
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
@@ -48,6 +47,8 @@ function getRaces(req, res){
 		});
 }
 
+
+
 //Get waypoints for a specific race 
 function getWaypointsForRace(req,res){
 	var user = new User(req.user);
@@ -59,7 +60,7 @@ function getWaypointsForRace(req,res){
 		result
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
-			if(req.params.id){
+			
 				data = data[0];
 				if(isJsonRequest(req)){
 					res.json({response: data.waypoints});
@@ -67,7 +68,43 @@ function getWaypointsForRace(req,res){
 					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
 				return;
 				}
-			}
+			
+		})
+		.fail(err => {
+			console.log("error finding race");
+			res.status(500);
+			res.json({err});
+		});
+}
+
+function getUsersForWaypoint(req,res){
+	var user = new User(req.user);
+	var waypointid = req.params.waypointid;
+	var query = {};
+	if(req.params.id){
+		query._id = req.params.id;
+	}
+	var result = Race.find(query);
+		result
+		.then(data => {
+			
+				data = data[0];
+	
+				for (var i = 0; i < data.waypoints.length; i++){
+					console.log(data.waypoints[i]._id);
+					console.log(waypointid);
+				if (data.waypoints[i]._id == waypointid){
+					var waypoint = data.waypoints[i];
+				}
+			}	
+		
+				if(isJsonRequest(req)){
+					res.json({response: waypoint.users});
+				}else{
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+				return;
+				}
+			
 		})
 		.fail(err => {
 			console.log("error finding race");
@@ -235,12 +272,16 @@ router.route('/new')
 router.route('/:id')
     .get(getRaces)
 	.delete(deleteRace);
+	
 router.route('/:id/waypoints/new')
 	.get(getNewWaypoint);
 
 router.route('/:id/waypoints')
 	.get(getWaypointsForRace)
 	.post(addWaypoint);
+	
+router.route('/:id/waypoints/:waypointid/users')
+	.get(getUsersForWaypoint);
 
 router.route('/:id/state')
 	.post(updateRaceState);
