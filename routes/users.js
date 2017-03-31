@@ -66,34 +66,36 @@ function tagWaypoint(req,res){
 	var userid = req.params.id;
 	var raceid = req.params.raceid;
 	var waypointid = req.body.waypointid;
+	console.log(req.params);
 	var race;
 	var query = {};
 	query._id = raceid;
-	var valWaypointIndex;  //waypoint that we need to edit
-	var validRequest = true; //Will be set to false if the user has already tagged this waypoint
 	var result = Race.find(query);	
 	result
 		.then(data => {
 			race = data[0];
-			//First lets check if the waypoint were looking for actually exists in this race (array.includes doesnt work for checking user id's for some reason)
-			var c  = 0;
-			race.waypoints.forEach(function(waypoint) {
-				
-				if(waypoint._id == waypointid){ 	//Check if race actually contains waypoint were looking for
-					valWaypointIndex = c;			//For some reason saving the waypoint reference in a var and using it to push() later doesnt work so save the index
-					waypoint.users.forEach(function(user) {
-						if(user._id == userid){
-							console.log("user has already tagged this waypoint")
-							validRequest = false;	//User id found in this waypoints collection, invalidate request
-						}
-					})
+			for (var i = 0; i < race.waypoints.length; i++){
+				if (race.waypoints[i]._id == waypointid){
+					var waypoint = race.waypoints[i];
 				}
-				c++;
-			});
-			
-			saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res); 		
+			}
+			if(waypoint && !(JSON.stringify(waypoint.users).includes(userid))){
+				waypoint.users.push(userid);
+				race.save().then(savedRace => {
+					logRace(userid,waypoint.name,race._id);  //Log waypoint name and userid to socket
+					console.log("waypoint tagged");
+					res.status(201);
+					return res.json({savedRace});
+				}).fail(err => {
+					res.status(500);
+					return res.json({err});
+				});
+			}else{
+				console.log("User has already tagged this waypoint");
+				res.status(500);
+				return res.json({err: "invalid request"});
+			}
 		})
-		
 		.fail(err => {
 			console.log("error finding race");
 			res.status(500);
@@ -104,25 +106,25 @@ function tagWaypoint(req,res){
 /*
 If the request is valid, push the given user to the given race.waypoints[index].users array
 */
-function saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res){
+// function saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res){
 		
-		if(validRequest){
-				race.waypoints[valWaypointIndex].users.push(userid);
-				race.save().then(savedRace => {
-					//logRace(userid,race.waypoints[valWaypointIndex].name,race._id);  //Log waypoint name and userid to socket
-					console.log("waypoint tagged");
-					res.status(201);
-					return res.json({savedRace});
-				})
-				.fail(err => {
-					res.status(500);
-					res.json({err});
-				});	
-			}else{
-				res.status(500);
-				return res.json({err: "invalid request"});
-			}
-}
+// 		if(validRequest){
+// 				race.waypoints[valWaypointIndex].users.push(userid);
+// 				race.save().then(savedRace => {
+// 					//logRace(userid,race.waypoints[valWaypointIndex].name,race._id);  //Log waypoint name and userid to socket
+// 					console.log("waypoint tagged");
+// 					res.status(201);
+// 					return res.json({savedRace});
+// 				})
+// 				.fail(err => {
+// 					res.status(500);
+// 					res.json({err});
+// 				});	
+// 			}else{
+// 				res.status(500);
+// 				return res.json({err: "invalid request"});
+// 			}
+// }
 
 
 
