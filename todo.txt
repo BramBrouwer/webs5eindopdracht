@@ -1,6 +1,6 @@
 TODO
-- json return values voor login 
-- error callbacks ook json/html (is nu alleen json)
+- error callbacks ook json/html (is nu alleen json) misschien gewoon error.ejs aanroepen en de error meegeven aan de view?
+- consisten en misschien op een plek errors afhandelen 
 
 POPULATION
  op alle relevante json return values voor deze routes V
