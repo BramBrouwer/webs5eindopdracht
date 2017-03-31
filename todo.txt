@@ -11,7 +11,7 @@ ALGEMENE EISEN
 - tests
 - documentatie
 - heroku
-- Requirements doornemen
+- Requirements doornemen wat missen we nog, kunnen we makkelijk beter doen, etc.
 
 BUGS TO CHECK 
 - kan een race 2 keer gestart worden?
