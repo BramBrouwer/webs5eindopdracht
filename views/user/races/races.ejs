@@ -14,7 +14,7 @@
                         <% if(JSON.stringify(user.races).includes(races[i]._id)) { %>
                             <div class="col-xs-2">Joined</div>
                         <% }else{ %>
-                            <form id="join<%= i %>" action="/races/user/new" method="post">
+                            <form id="join<%= i %>" action="/users/<%= user._id %>/races" method="post">
                                 <input type="hidden" name="userid" value="<%= user._id %>">
                                 <input type="hidden" name="raceid" value="<%= races[i]._id %>">
                                 <input type="hidden" name="racename" value="<%= races[i].name %>">
@@ -30,7 +30,7 @@
                         <% if(JSON.stringify(user.races).includes(races[i]._id)) { %>
                             <div class="col-xs-2">Joined</div>
                         <% }else{ %>
-                            <form id="join<%= i %>" action="/races/user/new" method="post">
+                            <form id="join<%= i %>" action="/users/<%= user._id %>/races" method="post">
                                 <input type="hidden" name="userid" value="<%= user._id %>">
                                 <input type="hidden" name="raceid" value="<%= races[i]._id %>">
                                 <input type="hidden" name="racename" value="<%= races[i].name %>">

@@ -78,7 +78,7 @@ function tagWaypoint(req,res){
 					var waypoint = race.waypoints[i];
 				}
 			}
-			if(waypoint){
+			if(waypoint && !waypoint.users.includes(userid)){
 				waypoint.users.push(userid);
 				race.save().then(savedRace => {
 					logRace(userid,waypoint.name,race._id);  //Log waypoint name and userid to socket
