@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 //Functions
-
 function getHome(req, res){
     var user = new User(req.user);
     console.log(req.headers);

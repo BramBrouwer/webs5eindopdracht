@@ -54,6 +54,7 @@ app.use(function (req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/login');
 });
+
 //Routes
 app.use('/', require('./routes/home.js'));
 app.use('/login', require('./routes/login.js'));
