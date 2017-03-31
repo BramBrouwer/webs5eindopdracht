@@ -83,13 +83,12 @@ function deleteRace(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	Race.remove({ _id: req.params.id }, function(err) {
     if (!err) {
+		res.status(200);
 		if(isJsonRequest(req)){
-			res.status(200);
 			res.json({response : "Race deleted"})
 		}
 		else{
 			console.log("Race deleted")
-			res.status(200);
 			res.json({response : "Race deleted (res.redirect werkt niet na een delete request en handmatig method naar GET veranderen werkt ook niet.)"})
 		}
     }
@@ -135,6 +134,7 @@ function addWaypoint(req,res){
 			race.save().then(savedRace => {
 			console.log('waypoint added');
 				if(isJsonRequest(req)){
+					res.status(200);
 					res.json({response : savedRace})
 				}else{
 					res.redirect('/races/' + savedRace._id);
@@ -169,7 +169,7 @@ function updateRaceState(req,res){
 				if(err)  return res.json({err});
 				console.log("Race started");
 				if(isJsonRequest(req)){
-					res.status(201);
+					res.status(200);
 					res.json({response: race});
 				}else{
 					res.redirect(req.get('referer'));

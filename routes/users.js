@@ -24,7 +24,11 @@ function getUsers(req, res){
 			if(req.params.id){
 				data = data[0];
 			}
-			return res.json(data);
+			if(isJsonRequest(req)){	
+				return res.json({response: data});
+			}else{
+				return res.json({response: data});  //Er is geen user view
+			}
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
@@ -34,7 +38,11 @@ function addUser(req, res){
 	user.save()
 		.then(savedUser => {
 			res.status(201);
-			res.json(savedUser);
+			if(isJsonRequest(req)){	
+				return res.json({response: savedUser});
+			}else{
+				return res.json({response: savedUser}); //Er is geen view om te registreren, alleen wat pre aangemaakte lokale accounts en inloggen via social signin dus dit is neit relevant
+			}
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
@@ -50,8 +58,12 @@ function getUserRaces(req, res){
 	result
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
+			if(isJsonRequest(req)){	
+				return res.json({response: data});
+			}else{
 			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races', 'My Races'], user: user, races: data });
 			return;
+			}
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
@@ -84,8 +96,12 @@ function tagWaypoint(req,res){
 				race.save().then(savedRace => {
 					logRace(userid,waypoint.name,race._id);  //Log waypoint name and userid to socket
 					console.log("waypoint tagged");
-					res.status(201);
-					return res.json({savedRace});
+					res.status(200);
+					if(isJsonRequest(req)){	
+						return res.json({response: savedRace});
+					}else{
+						return res.redirect('/races/' + raceid);
+					}
 				}).fail(err => {
 					res.status(500);
 					return res.json({err});
@@ -103,31 +119,6 @@ function tagWaypoint(req,res){
 		});
 }
 
-/*
-If the request is valid, push the given user to the given race.waypoints[index].users array
-*/
-// function saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res){
-		
-// 		if(validRequest){
-// 				race.waypoints[valWaypointIndex].users.push(userid);
-// 				race.save().then(savedRace => {
-// 					//logRace(userid,race.waypoints[valWaypointIndex].name,race._id);  //Log waypoint name and userid to socket
-// 					console.log("waypoint tagged");
-// 					res.status(201);
-// 					return res.json({savedRace});
-// 				})
-// 				.fail(err => {
-// 					res.status(500);
-// 					res.json({err});
-// 				});	
-// 			}else{
-// 				res.status(500);
-// 				return res.json({err: "invalid request"});
-// 			}
-// }
-
-
-
 function addRace(req, res){
 	var query = {};
 	query._id = req.body.userid;
@@ -137,18 +128,28 @@ function addRace(req, res){
 			data = data[0];
 			data.races.push({_id: req.body.raceid, name: req.body.racename});
 			data.save().then(savedUser => {
-				res.redirect('/races/' + req.body.raceid);
+				res.status(200);
+				if(isJsonRequest(req)){	
+					res.json({response: savedUser});
+				}else{
+					res.redirect('/races/' + req.body.raceid);
+				}
 			});
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
 /*
-Use emit identifier with raceid so people only get relevant logs 
-Actually show logs in race view 
 TODO: geef de process.env.PORT door aan view
 */
 function logRace(userid,waypointname,raceid){
 		app.io.sockets.emit('checkinLogged'+raceid,{msg: "User: " + userid + " checked in at: "+ waypointname});
+}
+
+function isJsonRequest(req){
+      if(req.accepts('html') == 'html'){
+          return false;
+      }
+      return true;
 }
 
 //Routes
