@@ -159,10 +159,10 @@ function updateRaceState(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	var active = req.body.active;
 	console.log(active);
-	var raceId = req.params.id;
+	var raceid = req.params.id;
 	Race
 		.findByIdAndUpdate(
-			raceId,
+			raceid,
 			{ $set: {active: active}},
 			{ new: true},
 			function (err,race){

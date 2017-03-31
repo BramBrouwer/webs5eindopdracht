@@ -25,16 +25,13 @@ function getProfile(req, res){
 }
 
 function logout(req, res) {
-    
     if(isJsonRequest(req)){
         req.logout();
         res.json({msg: "Logged out"});
     }else{
          req.logout();
-         res.redirect('/');
+         res.redirect('/login');
     }
-    
-  
 }
 
 function isJsonRequest(req){

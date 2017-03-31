@@ -11,6 +11,7 @@
             
             <!-- LOGIN FORM -->
             <form action="/races/<%= raceid %>/waypoints" method="post">
+                <input type="hidden" name="user" value="<%= user %>" />
                 <div class="form-group">
                     <label>Google id</label>
                     <input type="text" class="form-control" name="googleid">
