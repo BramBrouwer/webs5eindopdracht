@@ -73,7 +73,7 @@ function handleError(req, res, statusCode, message){
   
     if(isJsonRequest(req)){
           console.log("isjson");
-          res.json(message);
+          res.json({err: message});
     }else{
         console.log("ishtml");
         res.render('error', {error: message});
