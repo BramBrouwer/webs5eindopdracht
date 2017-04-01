@@ -3,7 +3,7 @@ var router = express.Router();
 var _ = require('underscore');
 var mongoose = require('mongoose');
 var passport = require('passport');
-
+var handleError;
 //Models
 Race = mongoose.model('Race');
 User = mongoose.model('User');
@@ -40,11 +40,7 @@ function getRaces(req, res){
 			}
 			
 		})
-		.fail(err => {
-			console.log("error finding races");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 
 
@@ -70,11 +66,7 @@ function getWaypointsForRace(req,res){
 				}
 			
 		})
-		.fail(err => {
-			console.log("error finding race");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 
 function getUsersForWaypoint(req,res){
@@ -287,5 +279,9 @@ router.route('/:id/state')
 	.post(updateRaceState);
 
 
-
-module.exports = router;
+module.exports = function (errCallback){
+	console.log('Initializing race routing module');
+	
+	handleError = errCallback;
+	return router;
+};

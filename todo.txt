@@ -1,5 +1,5 @@
 TODO
-- error callbacks ook json/html (is nu alleen json) misschien gewoon error.ejs aanroepen en de error meegeven aan de view?
+- error callbacks ook json/html (is nu alleen json) misschien gewoon error.ejs aanroepen en de error meegeven aan de view? -- dit fuckt msischein wel met de tests en redelijk overbodig 
 - consisten en misschien op een plek errors afhandelen 
 
 POPULATION
@@ -7,7 +7,7 @@ POPULATION
         - race/id/waypoints
         - race/id
         - races     
-
+        
 ALGEMENE EISEN
 - tests
 - documentatie
