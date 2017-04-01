@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var handleError;
 
 //Get login page (no json response possible)
 function getHome(req, res){
@@ -64,5 +65,9 @@ router.route('/failure')
 
 
         
-
-module.exports = router;
+module.exports = function (errCallback){
+	console.log('Initializing login routing module');
+	
+	handleError = errCallback;
+	return router;
+};

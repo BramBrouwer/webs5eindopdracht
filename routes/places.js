@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var request = require('request');
+var handleError;
 
 function getPlaces(req,res){
     
@@ -22,4 +23,9 @@ function getPlaces(req,res){
 router.route('/')
       .post(getPlaces);
 
-module.exports = router;
+module.exports = function (errCallback){
+	console.log('Initializing places routing module');
+	
+	handleError = errCallback;
+	return router;
+};

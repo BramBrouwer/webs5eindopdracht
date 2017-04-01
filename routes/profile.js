@@ -2,9 +2,7 @@ var express = require('express');
 var router = express.Router();
 var _ = require('underscore');
 var mongoose = require('mongoose');
-
-//Models
-Race = mongoose.model('Race');
+var handleError;
 
 //Functions
 
@@ -47,4 +45,9 @@ router.route('/')
 router.route('/logout')
     .get(logout);
 
-module.exports = router;
+module.exports = function (errCallback){
+	console.log('Initializing profile routing module');
+	
+	handleError = errCallback;
+	return router;
+};;

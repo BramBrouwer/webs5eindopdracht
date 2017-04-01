@@ -98,11 +98,7 @@ function getUsersForWaypoint(req,res){
 				}
 			
 		})
-		.fail(err => {
-			console.log("error finding race");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 
 
@@ -122,11 +118,7 @@ function addRace(req, res){
 				res.redirect('/races/' + savedRace._id);
 			}
 		})
-		.fail(err => {
-			console.log("error creating race");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 
 //Page for creating a new race 
@@ -200,17 +192,7 @@ function addWaypoint(req,res){
 				}
 			});
 		})
-		.fail(err => {
-			console.log("error getting race");
-			res.status(500);
-			if(isJsonRequest(req)){
-			res.json({err});
-			}else{
-				res.redirect('/races/' + race._id);
-			}
-			
-		
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 
 //Update race state

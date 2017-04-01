@@ -1,6 +1,5 @@
 TODO
-- error callbacks ook json/html (is nu alleen json) misschien gewoon error.ejs aanroepen en de error meegeven aan de view? -- dit fuckt msischein wel met de tests en redelijk overbodig 
-- consisten en misschien op een plek errors afhandelen 
+- Error handling voor race en users moet apart 
 
 POPULATION
  op alle relevante json return values voor deze routes V
