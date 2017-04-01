@@ -50,7 +50,11 @@ app.use(function (req, res, next) {
     if (req.path.startsWith('/login'))
         return next();
     // if they aren't redirect them to the home page
-    res.redirect('/login');
+    if(isJsonRequest(req)){
+        res.json({err: "Please login first"});
+    }else{
+        res.redirect('/login');
+    }
 });
 
 //Routes
