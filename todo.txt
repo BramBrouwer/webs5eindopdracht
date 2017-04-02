@@ -1,6 +1,3 @@
-TODO
-- een user niet redirecten maar json sturen als ze json req proberen zonder in te loggen
-
 POPULATION
  op alle relevante json return values voor deze routes V
         - race/id/waypoints
