@@ -101,21 +101,14 @@ function tagWaypoint(req,res){
 					}else{
 						return res.redirect('/races/' + raceid);
 					}
-				}).fail(err => {
-					res.status(500);
-					return res.json({err});
-				});
+				}).fail(err => handleError(req, res, 500, err));
 			}else{
 				console.log("User has already tagged this waypoint");
 				res.status(500);
 				return res.json({err: "invalid request"});
 			}
 		})
-		.fail(err => {
-			console.log("error finding race");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 /*
 Join race

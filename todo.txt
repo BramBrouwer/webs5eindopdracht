@@ -1,5 +1,3 @@
-- Geen my races in admin view
-- population toepassen bij waypoint check loggen? misschien makkelijker dan onderstaande 
 POPULATION
  op alle relevante json return values voor deze routes V
         - race/id/waypoints
@@ -13,7 +11,6 @@ ALGEMENE EISEN
 
 BUGS TO CHECK 
 - kan een user alleen binnen een race taggen die hij gejoined is ?
-- volgesmij klopt de socket nog niet als je in heroku draait (ook in de view env.process.port doorgeven via route)
 
 ////API DOC
 API key
