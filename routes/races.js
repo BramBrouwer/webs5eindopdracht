@@ -3,7 +3,7 @@ var router = express.Router();
 var _ = require('underscore');
 var mongoose = require('mongoose');
 var passport = require('passport');
-
+var handleError;
 //Models
 Race = mongoose.model('Race');
 User = mongoose.model('User');
@@ -14,11 +14,36 @@ User = mongoose.model('User');
 function getRaces(req, res){
 	var user = new User(req.user);
 	var query = {};
+	var pageIndex;
+	var pageSize;
+
 	if(req.params.id){
 		query._id = req.params.id;
 	}
 
-	var result = Race.find(query);
+	if(req.query.pagesize)//if limit is specified, use it, if not set it to zero
+	{
+		pageSize = parseInt(req.query.pagesize);
+	}else pageSize = 0;
+	
+	if(req.query.pageindex)//if pageIndex is specified use it, if not set it to zero
+	{
+		pageIndex = parseInt(req.query.pageindex);
+	}else pageIndex = 0;
+
+	if(req.query.name){ //Check if request contains a country, if it does call the static method in author model
+		Race.findByName(req.query.name, function(err, data) 
+		{
+			if(err) return handleError(req,res,500,err);
+			if(isJsonRequest(req)){
+				res.json({response: data});
+			}else{
+				res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data  ,port: process.env.PORT});
+			}
+		 	
+		})	
+	}else{
+	var result = Race.find(query).limit(pageSize).skip(pageIndex);
 	result
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
@@ -27,7 +52,7 @@ function getRaces(req, res){
 				if(isJsonRequest(req)){
 					res.json({race: data});
 				}else{
-					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data  ,port: process.env.PORT});
 					return;
 				}
 			}
@@ -39,11 +64,8 @@ function getRaces(req, res){
 			}
 			
 		})
-		.fail(err => {
-			console.log("error finding races");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
+	}
 }
 
 
@@ -64,16 +86,12 @@ function getWaypointsForRace(req,res){
 				if(isJsonRequest(req)){
 					res.json({waypoints: data.waypoints});
 				}else{
-					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data  ,port: process.env.PORT});
 				return;
 				}
 			
 		})
-		.fail(err => {
-			console.log("error finding race");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 
 function getUsersForWaypoint(req,res){
@@ -83,33 +101,26 @@ function getUsersForWaypoint(req,res){
 	if(req.params.id){
 		query._id = req.params.id;
 	}
-	var result = Race.find(query);
+	var result = Race.find(query).populate('waypoints.users');
 		result
 		.then(data => {
 			
 				data = data[0];
 	
 				for (var i = 0; i < data.waypoints.length; i++){
-					console.log(data.waypoints[i]._id);
-					console.log(waypointid);
 					if (data.waypoints[i]._id == waypointid){
 						var waypoint = data.waypoints[i];
 					}
 				}	
-		
 				if(isJsonRequest(req)){
 					res.json({users: waypoint.users});
 				}else{
-					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data ,port: process.env.PORT});
 				return;
 				}
 			
 		})
-		.fail(err => {
-			console.log("error finding race");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 
 
@@ -129,11 +140,7 @@ function addRace(req, res){
 				res.redirect('/races/' + savedRace._id);
 			}
 		})
-		.fail(err => {
-			console.log("error creating race");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 
 //Page for creating a new race 
@@ -145,7 +152,6 @@ function getNewRace(req,res){
 
 //Delete race (via ajax request)
 function deleteRace(req,res){
-	console.log('debug');
 	if(req.user.role != "admin") {res.redirect('/');}
 	Race.remove({ _id: req.params.id }, function(err) {
     if (!err) {
@@ -207,24 +213,13 @@ function addWaypoint(req,res){
 				}
 			});
 		})
-		.fail(err => {
-			console.log("error getting race");
-			res.status(500);
-			if(isJsonRequest(req)){
-			res.json({err});
-			}else{
-				res.redirect('/races/' + race._id);
-			}
-			
-		
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
 
 //Update race state
 function updateRaceState(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	var active = req.body.active;
-	console.log(active);
 	var raceid = req.params.id;
 	Race
 		.findByIdAndUpdate(
@@ -286,5 +281,8 @@ router.route('/:id/state')
 	.put(updateRaceState);
 
 
-
-module.exports = router;
+module.exports = function (errCallback){
+	console.log('Initializing race routing module');
+	handleError = errCallback;
+	return router;
+};

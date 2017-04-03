@@ -3,9 +3,6 @@ var router = express.Router();
 var _ = require('underscore');
 var mongoose = require('mongoose');
 
-//Models
-Race = mongoose.model('Race');
-
 //Functions
 
 //API
@@ -47,4 +44,7 @@ router.route('/')
 router.route('/logout')
     .get(logout);
 
-module.exports = router;
+module.exports = function (){
+	console.log('Initializing profile routing module');
+	return router;
+};;

@@ -9,4 +9,8 @@ function getHome(req, res){
 
 //Routes
 router.route('/').get(getHome);
-module.exports = router;
+
+module.exports = function (){
+	console.log('Initializing home routing module');
+	return router;
+};

@@ -22,7 +22,7 @@ var userSchema = mongoose.Schema({
         type: String,
         default: "user"
     },
-    races: [{_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Race'}, name: String}]
+    races: [{type: mongoose.Schema.Types.ObjectId, ref: 'Race'}]
 });
 
 // methods ======================
@@ -35,6 +35,10 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
+
+userSchema.statics.findByLocalName = function(name,callback){
+    return this.find({'local.name' : name},callback);
+}
 
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema); 

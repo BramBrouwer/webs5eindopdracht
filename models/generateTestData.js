@@ -50,8 +50,7 @@ function fillTestUsers(){
             },
             {
                 name: "Race 3",
-                active: true,
-                waypoints: [{googleid: "waypoint3.1",name: "waypoint3.2"}]
+                active: true
             }, 
             {
                 name: "Race 4"

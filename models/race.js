@@ -13,8 +13,12 @@ var raceSchema = new mongoose.Schema({
     waypoints: [{
         googleid: String,
         name : String,
-        users: [{_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}}]
+        users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
     }]
 });
+
+raceSchema.statics.findByName = function(name,callback){
+    return this.find({name: name},callback);
+}
 
 mongoose.model('Race', raceSchema);

@@ -26,12 +26,6 @@ function getloginFailure(req,res){
     }
 }
 
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
 //Local login
 router.route('/')
     .get(getHome)
@@ -62,7 +56,14 @@ router.route('/success')
 router.route('/failure')
     .get(getloginFailure);
 
-
+function isJsonRequest(req){
+      if(req.accepts('html') == 'html'){
+          return false;
+      }
+      return true;
+}
         
-
-module.exports = router;
+module.exports = function (){
+	console.log('Initializing login routing module');
+	return router;
+};
