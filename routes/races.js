@@ -14,10 +14,22 @@ User = mongoose.model('User');
 function getRaces(req, res){
 	var user = new User(req.user);
 	var query = {};
+	var pageIndex;
+	var pageSize;
 
 	if(req.params.id){
 		query._id = req.params.id;
 	}
+
+	if(req.query.pagesize)//if limit is specified, use it, if not set it to zero
+	{
+		pageSize = parseInt(req.query.pagesize);
+	}else pageSize = 0;
+	
+	if(req.query.pageindex)//if pageIndex is specified use it, if not set it to zero
+	{
+		pageIndex = parseInt(req.query.pageindex);
+	}else pageIndex = 0;
 
 	if(req.query.name){ //Check if request contains a country, if it does call the static method in author model
 		Race.findByName(req.query.name, function(err, data) 
@@ -31,8 +43,7 @@ function getRaces(req, res){
 		 	
 		})	
 	}else{
-
-	var result = Race.find(query);
+	var result = Race.find(query).limit(pageSize).skip(pageIndex);
 	result
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
@@ -90,7 +101,7 @@ function getUsersForWaypoint(req,res){
 	if(req.params.id){
 		query._id = req.params.id;
 	}
-	var result = Race.find(query);
+	var result = Race.find(query).populate('waypoints.users');
 		result
 		.then(data => {
 			

@@ -11,9 +11,21 @@ Race = mongoose.model('Race');
 //Functions
 function getUsers(req, res){
     var query = {};
+	var pageIndex;
+	var pageSize;
 	if(req.params.id){
 		query._id = req.params.id;
 	} 
+
+	if(req.query.pagesize)//if limit is specified, use it, if not set it to zero
+	{
+		pageSize = parseInt(req.query.pagesize);
+	}else pageSize = 0;
+	
+	if(req.query.pageindex)//if pageIndex is specified use it, if not set it to zero
+	{
+		pageIndex = parseInt(req.query.pageindex);
+	}else pageIndex = 0;
 
 	if(req.query.localname){ //Check if request contains a country, if it does call the static method in author model
 		User.findByLocalName(req.query.localname, function(err, data) 
@@ -23,7 +35,7 @@ function getUsers(req, res){
 		})	
 	}else{
 
-	var result = User.find(query);
+	var result = User.find(query).limit(pageSize).skip(pageIndex);;
 	result
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
@@ -54,7 +66,31 @@ function addUser(req, res){
 		.fail(err => handleError(req, res, 500, err));
 }
 
-function getUserRaces(req, res){
+function getUserRaces(req,res){
+	var userid = req.params.id;
+	var query = {};
+	var user = new User(req.user);
+	if(req.params.id){
+		query._id = req.params.id;
+	}
+
+	var result = User.find(query).populate('races');
+
+	result
+		.then(data=> {
+			data = data[0];
+			if(isJsonRequest(req)){	
+				return res.json({response: data.races});
+			}else{
+			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races', 'My Races'], user: user, races: data.races });
+			return;
+			}
+		})
+		.fail(err=> handleError(req,res,500,err));
+}
+
+function getUserRacesOld(req, res){
+	var userid = req.params.id;
 	var user = new User(req.user);
 	var raceids = [];
 	for(var i=0;i < user.races.length;i++){
@@ -119,7 +155,7 @@ function tagWaypoint(req,res){
 		.fail(err => handleError(req, res, 500, err));
 }
 /*
-Join race
+Join race //TODO werkende met nieuw model 
 */
 function addRace(req, res){
 	var query = {};
@@ -128,7 +164,7 @@ function addRace(req, res){
 	user
 		.then(data => {
 			data = data[0];
-			data.races.push({_id: req.body.raceid, name: req.body.racename});
+			data.races.push(req.body.raceid);
 			data.save().then(savedUser => {
 				res.status(200);
 				if(isJsonRequest(req)){	

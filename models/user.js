@@ -22,7 +22,7 @@ var userSchema = mongoose.Schema({
         type: String,
         default: "user"
     },
-    races: [{_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Race'}, name: String}]
+    races: [{type: mongoose.Schema.Types.ObjectId, ref: 'Race'}]
 });
 
 // methods ======================

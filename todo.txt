@@ -1,12 +1,12 @@
 TODO
 A - van alle updates een PUT maken 
 A - tests toevoegen aan login 
-B - filtering op races - naam met quuery string cars
-B - filtering op users - rol of naam met query string vars 
+B - filtering op races - naam met quuery string cars           X 
+B - filtering op users - rol of naam met query string vars     X 
 B - documentatie 
 A - tests afmaken 
 A - population 
-B - paging toevoegen aan shit
+B - paging toevoegen aan shit                                  X
 
 
  NICE TO HAVE
