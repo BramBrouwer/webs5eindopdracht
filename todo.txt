@@ -8,29 +8,18 @@ A - tests afmaken                                              X
 A - population                                                 X
 B - paging toevoegen aan shit                                  X
 
+zooi online gooien 
 
  NICE TO HAVE
-A nieuwe testdata
-B TESTEN OF ALLE REFS NOG WERKEN NU SHIT GEUPDATE IS
-B - socket client naar server
+A nieuwe testdata                                              X
+B TESTEN OF ALLE REFS NOG WERKEN NU SHIT GEUPDATE IS           X
+B - socket client naar server                                  X
 - meervalidatie  (uitzoeken wat externe validatie is)
 B - 2e social signin
-A - admin autorisatie ook in index als middleware 
-
-
- 
- op alle relevante json return values voor deze routes V
-        - race/id/waypoints
-        - race/id
-        - races     
-
-ALGEMENE EISEN
-- tests
-- documentatie
-- Requirements doornemen wat missen we nog, kunnen we makkelijk beter doen, etc.
-
-BUGS TO CHECK 
+A - admin autorisatie ook in index als middleware  
 A - kan een user alleen binnen een race taggen die hij gejoined is ?
+
+
 ////API DOC
 API key
 AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw
