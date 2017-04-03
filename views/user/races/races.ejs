@@ -14,11 +14,11 @@
                         <% if(JSON.stringify(user.races).includes(races[i]._id)) { %>
                             <div class="col-xs-2">Joined</div>
                         <% }else{ %>
-                            <form id="join<%= i %>" action="/races/user/new" method="post">
-                                <input type="hidden" name="userid" value="<%= user._id %>">
-                                <input type="hidden" name="raceid" value="<%= races[i]._id %>">
-                                <input type="hidden" name="racename" value="<%= races[i].name %>">
-                                <div class="col-xs-2"><a href="#" onclick="document.getElementById('join<%= i %>').submit();">Join</input></div>
+                            <form id="join<%= i %>" action="/users/<%= user._id %>/races" method="post">
+                                <input type="hidden" name="userid" value="<%= user._id %>" />
+                                <input type="hidden" name="raceid" value="<%= races[i]._id %>" />
+                                <input type="hidden" name="racename" value="<%= races[i].name %>" />
+                                <div class="col-xs-2"><a href="#" onclick="document.getElementById('join<%= i %>').submit();">Join</a></div>
                             </form>
                         <% } %>
                     </div>
@@ -30,11 +30,11 @@
                         <% if(JSON.stringify(user.races).includes(races[i]._id)) { %>
                             <div class="col-xs-2">Joined</div>
                         <% }else{ %>
-                            <form id="join<%= i %>" action="/races/user/new" method="post">
-                                <input type="hidden" name="userid" value="<%= user._id %>">
-                                <input type="hidden" name="raceid" value="<%= races[i]._id %>">
-                                <input type="hidden" name="racename" value="<%= races[i].name %>">
-                                <div class="col-xs-2"><a href="#" onclick="document.getElementById('join<%= i %>').submit();">Join</input></div>
+                            <form id="join<%= i %>" action="/users/<%= user._id %>/races" method="post">
+                                <input type="hidden" name="userid" value="<%= user._id %>" />
+                                <input type="hidden" name="raceid" value="<%= races[i]._id %>" />
+                                <input type="hidden" name="racename" value="<%= races[i].name %>" />
+                                <div class="col-xs-2"><a href="#" onclick="document.getElementById('join<%= i %>').submit();">Join</div>
                             </form>
                         <% } %>
                     </div>

@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var _ = require('underscore');
-
-
+var handleError;
+var app;
 //Models
 User = mongoose.model('User');
 Race = mongoose.model('Race');
@@ -11,21 +11,45 @@ Race = mongoose.model('Race');
 //Functions
 function getUsers(req, res){
     var query = {};
+	var pageIndex;
+	var pageSize;
 	if(req.params.id){
 		query._id = req.params.id;
 	} 
 
-	var result = User.find(query);
+	if(req.query.pagesize)//if limit is specified, use it, if not set it to zero
+	{
+		pageSize = parseInt(req.query.pagesize);
+	}else pageSize = 0;
+	
+	if(req.query.pageindex)//if pageIndex is specified use it, if not set it to zero
+	{
+		pageIndex = parseInt(req.query.pageindex);
+	}else pageIndex = 0;
 
+	if(req.query.localname){ //Check if request contains a country, if it does call the static method in author model
+		User.findByLocalName(req.query.localname, function(err, data) 
+		{
+			if(err) return handleError(req,res,500,err);
+				res.json({response: data});
+		})	
+	}else{
+
+	var result = User.find(query).limit(pageSize).skip(pageIndex);;
 	result
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
 			if(req.params.id){
 				data = data[0];
 			}
-			return res.json(data);
+			if(isJsonRequest(req)){	
+				return res.json({users: data});
+			}else{
+				return res.json({users: data});  //Er is geen user view
+			}
 		})
 		.fail(err => handleError(req, res, 500, err));
+	}
 }
 
 function addUser(req, res){
@@ -33,12 +57,40 @@ function addUser(req, res){
 	user.save()
 		.then(savedUser => {
 			res.status(201);
-			res.json(savedUser);
+			if(isJsonRequest(req)){	
+				return res.json({user: savedUser});
+			}else{
+				return res.json({user: savedUser}); //Er is geen view om te registreren, alleen wat pre aangemaakte lokale accounts en inloggen via social signin dus dit is neit relevant
+			}
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
 
-function getUserRaces(req, res){
+function getUserRaces(req,res){
+	var userid = req.params.id;
+	var query = {};
+	var user = new User(req.user);
+	if(req.params.id){
+		query._id = req.params.id;
+	}
+
+	var result = User.find(query).populate('races');
+
+	result
+		.then(data=> {
+			data = data[0];
+			if(isJsonRequest(req)){	
+				return res.json({response: data.races});
+			}else{
+			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races', 'My Races'], user: user, races: data.races });
+			return;
+			}
+		})
+		.fail(err=> handleError(req,res,500,err));
+}
+
+function getUserRacesOld(req, res){
+	var userid = req.params.id;
 	var user = new User(req.user);
 	var raceids = [];
 	for(var i=0;i < user.races.length;i++){
@@ -48,12 +100,17 @@ function getUserRaces(req, res){
 	var result = Race.find(query);
 	result
 		.then(data => {
-			// We hebben gezocht op id, dus we gaan geen array teruggeven.
+			
+			if(isJsonRequest(req)){	
+				return res.json({races: data});
+			}else{
 			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races', 'My Races'], user: user, races: data });
 			return;
+			}
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
+
 
 /*
 	Tag a a waypoint
@@ -77,51 +134,29 @@ function tagWaypoint(req,res){
 					var waypoint = race.waypoints[i];
 				}
 			}
-			if(waypoint){
+			if(waypoint && !(JSON.stringify(waypoint.users).includes(userid))){
 				waypoint.users.push(userid);
 				race.save().then(savedRace => {
+					logRace(userid,waypoint.name,race._id);  //Log waypoint name and userid to socket
 					console.log("waypoint tagged");
-					res.status(201);
-					return res.json({savedRace});
-				}).fail(err => {
-					res.status(500);
-					return res.json({err});
-				});
+					res.status(200);
+					if(isJsonRequest(req)){	
+						return res.json({race: savedRace});
+					}else{
+						return res.redirect('/races/' + raceid);
+					}
+				}).fail(err => handleError(req, res, 500, err));
 			}else{
 				console.log("User has already tagged this waypoint");
 				res.status(500);
 				return res.json({err: "invalid request"});
 			}
 		})
-		.fail(err => {
-			console.log("error finding race");
-			res.status(500);
-			res.json({err});
-		});
+		.fail(err => handleError(req, res, 500, err));
 }
-
 /*
-If the request is valid, push the given user to the given race.waypoints[index].users array
+Join race //TODO werkende met nieuw model 
 */
-function saveTaggedWaypoint(validRequest,race,valWaypointIndex,userid,res){
-		
-		if(validRequest){
-				race.waypoints[valWaypointIndex].users.push(userid);
-				race.save().then(savedRace => {
-					console.log("waypoint tagged");
-					res.status(201);
-					return res.json({savedRace});	
-				})
-				.fail(err => {
-					res.status(500);
-					res.json({err});
-				});	
-			}else{
-				res.status(500);
-				return res.json({err: "invalid request"});
-			}
-}
-
 function addRace(req, res){
 	var query = {};
 	query._id = req.body.userid;
@@ -129,12 +164,30 @@ function addRace(req, res){
 	user
 		.then(data => {
 			data = data[0];
-			data.races.push({_id: req.body.raceid, name: req.body.racename});
+			data.races.push(req.body.raceid);
 			data.save().then(savedUser => {
-				res.redirect('/races/' + req.body.raceid);
+				res.status(200);
+				if(isJsonRequest(req)){	
+					res.json({user: savedUser});
+				}else{
+					res.redirect('/races/' + req.body.raceid);
+				}
 			});
 		})
 		.fail(err => handleError(req, res, 500, err));
+}
+/*
+TODO: geef de process.env.PORT door aan view
+*/
+function logRace(userid,waypointname,raceid){
+		app.io.sockets.emit('checkinLogged'+raceid,{msg: "User: " + userid + " checked in at: "+ waypointname});
+}
+
+function isJsonRequest(req){
+      if(req.accepts('html') == 'html'){
+          return false;
+      }
+      return true;
 }
 
 //Routes
@@ -152,4 +205,12 @@ router.route('/:id/races')
 router.route('/:id/races/:raceid/waypoints')
 	.post(tagWaypoint);
 
-module.exports = router;
+router.route('/log')
+	.get(logRace);
+
+module.exports = function (appin,errCallback){
+	console.log('Initializing user routing module');
+	app=appin;
+	handleError = errCallback;
+	return router;
+};

@@ -10,7 +10,8 @@
             </div>
             
             <!-- LOGIN FORM -->
-            <form action="/races/<%= raceId %>/waypoints/new" method="post">
+            <form action="/races/<%= raceid %>/waypoints" method="post">
+                <input type="hidden" name="user" value="<%= user %>" />
                 <div class="form-group">
                     <label>Google id</label>
                     <input type="text" class="form-control" name="googleid">
@@ -27,7 +28,7 @@
             <form action="/places" method="post">
                 <h1 class="page-header">Google Places<h1>
                 <div class="col-lg-12">
-                    <input name="raceid" type="hidden" value="<%= raceId %>">
+                    <input name="raceid" type="hidden" value="<%= raceid %>">
                     <input name="user" type="hidden" value="<%= user %>">
                     <input name="location" type="text" class="form-control" placeholder="Location ...(longitude,latitude)">
                     <input name="radius" type="text" class="form-control" placeholder="Radius ...">

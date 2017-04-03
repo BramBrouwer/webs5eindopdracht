@@ -1,23 +1,37 @@
 TODO
+A - van alle updates een PUT maken 
+A - tests toevoegen aan login 
+B - filtering op races - naam met quuery string cars           X 
+B - filtering op users - rol of naam met query string vars     X 
+B - documentatie 
+A - tests afmaken 
+A - population                                                 X
+B - paging toevoegen aan shit                                  X
 
-ROUTES
-- races/id/waypoints 
-- user/id/races  - POST/GET
-- races/id/waypoints/id/users - GET
 
-EISEN
-- SOCKET
+ NICE TO HAVE
+A nieuwe testdata
+B TESTEN OF ALLE REFS NOG WERKEN NU SHIT GEUPDATE IS
+B - socket client naar server
+- meervalidatie  (uitzoeken wat externe validatie is)
+B - 2e social signin
+A - admin autorisatie ook in index als middleware 
+
+
+ 
+ op alle relevante json return values voor deze routes V
+        - race/id/waypoints
+        - race/id
+        - races     
+
+ALGEMENE EISEN
 - tests
 - documentatie
-- heroku
-- Requirements doornemen
+- Requirements doornemen wat missen we nog, kunnen we makkelijk beter doen, etc.
 
-BUGS
-- kan een race 2 keer gestart worden?
-- TAG WAYPOINT
-     -  User kan alleen binnen een race taggen die hij gejoined is 
-     -  Betere return values
-
+BUGS TO CHECK 
+A - kan een user alleen binnen een race taggen die hij gejoined is ?
+////API DOC
 API key
 AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw
 

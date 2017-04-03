@@ -3,20 +3,39 @@ var router = express.Router();
 var _ = require('underscore');
 var mongoose = require('mongoose');
 
-//Models
-Race = mongoose.model('Race');
-
 //Functions
 
 //API
 function getProfile(req, res){
     var user = new User(req.user);
-    res.render('profile.ejs', { title: 'Profile', bread: ['Profile'],  user : user });
+    
+    if(isJsonRequest(req)){
+        if(req.user == null){
+            res.json({err: "No user given"})
+        }else{
+            res.json({user: req.user});
+        }
+        console.log(req.user);
+    }else{   
+        res.render('profile.ejs', { title: 'Profile', bread: ['Profile'],  user : user });
+    }
 }
 
 function logout(req, res) {
-    req.logout();
-    res.redirect('/');
+    if(isJsonRequest(req)){
+        req.logout();
+        res.json({msg: "Logged out"});
+    }else{
+         req.logout();
+         res.redirect('/login');
+    }
+}
+
+function isJsonRequest(req){
+      if(req.accepts('html') == 'html'){
+          return false;
+      }
+      return true;
 }
 
 //Routes
@@ -25,4 +44,7 @@ router.route('/')
 router.route('/logout')
     .get(logout);
 
-module.exports = router;
+module.exports = function (){
+	console.log('Initializing profile routing module');
+	return router;
+};;

@@ -5,26 +5,34 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "bram",
   "license": "ISC",
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "~1.0.0",
+    "chai": "^3.5.0",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.0.0",
     "ejs": "^0.8.8",
     "express": "^4.15.2",
     "express-session": "^1.0.4",
+    "istanbul": "^0.4.5",
     "jquery": "^3.2.1",
+    "minimist": "*",
+    "mocha": "^3.2.0",
     "mongoose": "^4.8.7",
     "morgan": "^1.8.1",
+    "nyc": "^10.2.0",
     "passport": "~0.1.17",
     "passport-google-oauth": "~0.1.5",
     "passport-local": "~0.1.6",
     "q": "^1.5.0",
     "request": "^2.81.0",
+    "socket.io": "^1.7.3",
+    "supertest": "^3.0.0",
+    "swagger-node-express": "~2.0",
     "underscore": "^1.8.3"
   }
 }
