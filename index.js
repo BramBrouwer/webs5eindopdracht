@@ -58,11 +58,11 @@ app.use(function (req, res, next) {
 });
 
 //Routes
-app.use('/', require('./routes/home.js')(handleError));
-app.use('/login', require('./routes/login.js')(handleError));
+app.use('/', require('./routes/home.js')());
+app.use('/login', require('./routes/login.js')());
 app.use('/races', require('./routes/races.js')(handleError));
 app.use('/users', require('./routes/users.js')(app,handleError));
-app.use('/profile', require('./routes/profile.js')(handleError));
+app.use('/profile', require('./routes/profile.js')());
 app.use('/places',require('./routes/places.js')(handleError));
 
 //Error handler
@@ -84,6 +84,7 @@ function handleError(req, res, statusCode, message){
     }
 };
 
+//Check if we need to return json or html
 function isJsonRequest(req){
       if(req.accepts('html') == 'html'){
           return false;
@@ -95,5 +96,3 @@ function isJsonRequest(req){
 io.on('connection', function (socket) {
   console.log('log connected');
 });
-
-//module.exports = app;
