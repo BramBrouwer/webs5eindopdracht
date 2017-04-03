@@ -5,11 +5,13 @@ B - filtering op races - naam met quuery string cars           X
 B - filtering op users - rol of naam met query string vars     X 
 B - documentatie 
 A - tests afmaken 
-A - population 
+A - population                                                 X
 B - paging toevoegen aan shit                                  X
 
 
  NICE TO HAVE
+ nieuwe testdata
+ TESTEN OF ALLE REFS NOG WERKEN NU SHIT GEUPDATE IS
 - socket client naar server
 - meervalidatie  (uitzoeken wat externe validatie is)
 - 2e social signin
