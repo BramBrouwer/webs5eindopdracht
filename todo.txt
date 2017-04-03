@@ -1,9 +1,11 @@
+
+
 POPULATION
  op alle relevante json return values voor deze routes V
         - race/id/waypoints
         - race/id
         - races     
-        
+
 ALGEMENE EISEN
 - tests
 - documentatie

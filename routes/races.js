@@ -263,7 +263,6 @@ router.route('/:id/state')
 
 module.exports = function (errCallback){
 	console.log('Initializing race routing module');
-	
 	handleError = errCallback;
 	return router;
 };

@@ -1,8 +1,3 @@
-	
-module.exports = function (app,errCallback){
-	console.log('Initializing race routing module');
-	app=app;
-
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -174,6 +169,12 @@ router.route('/:id/races/:raceid/waypoints')
 router.route('/log')
 	.get(logRace);
 
+
+
+	
+module.exports = function (app,errCallback){
+	console.log('Initializing race routing module');
+	app=app;
 	handleError = errCallback;
 	return router;
 };

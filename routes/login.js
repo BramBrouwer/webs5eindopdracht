@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var handleError;
 
 //Get login page (no json response possible)
 function getHome(req, res){
@@ -27,12 +26,6 @@ function getloginFailure(req,res){
     }
 }
 
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
 //Local login
 router.route('/')
     .get(getHome)
@@ -63,11 +56,14 @@ router.route('/success')
 router.route('/failure')
     .get(getloginFailure);
 
-
+function isJsonRequest(req){
+      if(req.accepts('html') == 'html'){
+          return false;
+      }
+      return true;
+}
         
-module.exports = function (errCallback){
+module.exports = function (){
 	console.log('Initializing login routing module');
-	
-	handleError = errCallback;
 	return router;
 };
