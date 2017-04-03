@@ -1,4 +1,22 @@
-POPULATION
+TODO
+A - van alle updates een PUT maken 
+A - tests toevoegen aan login 
+B - filtering op races - naam met quuery string cars
+B - filtering op users - rol of naam met query string vars 
+B - documentatie 
+A - tests afmaken 
+A - population 
+B - paging toevoegen aan shit
+
+
+ NICE TO HAVE
+- socket client naar server
+- meervalidatie  (uitzoeken wat externe validatie is)
+- 2e social signin
+- admin autorisatie ook in index als middleware 
+
+
+ 
  op alle relevante json return values voor deze routes V
         - race/id/waypoints
         - race/id
