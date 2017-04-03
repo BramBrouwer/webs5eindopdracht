@@ -56,7 +56,7 @@ function getUserRaces(req, res){
 	var result = Race.find(query);
 	result
 		.then(data => {
-			// We hebben gezocht op id, dus we gaan geen array teruggeven.
+			
 			if(isJsonRequest(req)){	
 				return res.json({response: data});
 			}else{
@@ -117,7 +117,9 @@ function tagWaypoint(req,res){
 			res.json({err});
 		});
 }
-
+/*
+Join race
+*/
 function addRace(req, res){
 	var query = {};
 	query._id = req.body.userid;
@@ -169,12 +171,9 @@ router.route('/:id/races/:raceid/waypoints')
 router.route('/log')
 	.get(logRace);
 
-
-
-	
-module.exports = function (app,errCallback){
-	console.log('Initializing race routing module');
-	app=app;
+module.exports = function (appin,errCallback){
+	console.log('Initializing user routing module');
+	app=appin;
 	handleError = errCallback;
 	return router;
 };

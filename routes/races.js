@@ -27,14 +27,13 @@ function getRaces(req, res){
 				if(isJsonRequest(req)){
 				res.json({response: data});
 				}else{
-				res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+				res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data  ,port: process.env.PORT});
 				return;
 				}
 			}
 			if(isJsonRequest(req)){
 				res.json({response: data});
 			}else{
-				console.log(data);
 				res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races'], user: user, races: data });
 				return;
 			}
@@ -61,7 +60,7 @@ function getWaypointsForRace(req,res){
 				if(isJsonRequest(req)){
 					res.json({response: data.waypoints});
 				}else{
-					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data  ,port: process.env.PORT});
 				return;
 				}
 			
@@ -83,8 +82,7 @@ function getUsersForWaypoint(req,res){
 				data = data[0];
 	
 				for (var i = 0; i < data.waypoints.length; i++){
-					console.log(data.waypoints[i]._id);
-					console.log(waypointid);
+				
 				if (data.waypoints[i]._id == waypointid){
 					var waypoint = data.waypoints[i];
 				}
@@ -93,7 +91,7 @@ function getUsersForWaypoint(req,res){
 				if(isJsonRequest(req)){
 					res.json({response: waypoint.users});
 				}else{
-					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data ,port: process.env.PORT});
 				return;
 				}
 			
@@ -130,7 +128,6 @@ function getNewRace(req,res){
 
 //Delete race (via ajax request)
 function deleteRace(req,res){
-	console.log('debug');
 	if(req.user.role != "admin") {res.redirect('/');}
 	Race.remove({ _id: req.params.id }, function(err) {
     if (!err) {
@@ -199,7 +196,6 @@ function addWaypoint(req,res){
 function updateRaceState(req,res){
 	if(req.user.role != "admin") {res.redirect('/');}
 	var active = req.body.active;
-	console.log(active);
 	var raceid = req.params.id;
 	Race
 		.findByIdAndUpdate(

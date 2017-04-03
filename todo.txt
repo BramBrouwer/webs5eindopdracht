@@ -1,5 +1,5 @@
-
-
+- Geen my races in admin view
+- population toepassen bij waypoint check loggen? misschien makkelijker dan onderstaande 
 POPULATION
  op alle relevante json return values voor deze routes V
         - race/id/waypoints
