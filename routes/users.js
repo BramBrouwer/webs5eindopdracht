@@ -25,9 +25,9 @@ function getUsers(req, res){
 				data = data[0];
 			}
 			if(isJsonRequest(req)){	
-				return res.json({response: data});
+				return res.json({users: data});
 			}else{
-				return res.json({response: data});  //Er is geen user view
+				return res.json({users: data});  //Er is geen user view
 			}
 		})
 		.fail(err => handleError(req, res, 500, err));
@@ -39,9 +39,9 @@ function addUser(req, res){
 		.then(savedUser => {
 			res.status(201);
 			if(isJsonRequest(req)){	
-				return res.json({response: savedUser});
+				return res.json({user: savedUser});
 			}else{
-				return res.json({response: savedUser}); //Er is geen view om te registreren, alleen wat pre aangemaakte lokale accounts en inloggen via social signin dus dit is neit relevant
+				return res.json({user: savedUser}); //Er is geen view om te registreren, alleen wat pre aangemaakte lokale accounts en inloggen via social signin dus dit is neit relevant
 			}
 		})
 		.fail(err => handleError(req, res, 500, err));
@@ -59,7 +59,7 @@ function getUserRaces(req, res){
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
 			if(isJsonRequest(req)){	
-				return res.json({response: data});
+				return res.json({races: data});
 			}else{
 			res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races', 'My Races'], user: user, races: data });
 			return;
@@ -98,7 +98,7 @@ function tagWaypoint(req,res){
 					console.log("waypoint tagged");
 					res.status(200);
 					if(isJsonRequest(req)){	
-						return res.json({response: savedRace});
+						return res.json({race: savedRace});
 					}else{
 						return res.redirect('/races/' + raceid);
 					}
@@ -130,7 +130,7 @@ function addRace(req, res){
 			data.save().then(savedUser => {
 				res.status(200);
 				if(isJsonRequest(req)){	
-					res.json({response: savedUser});
+					res.json({user: savedUser});
 				}else{
 					res.redirect('/races/' + req.body.raceid);
 				}

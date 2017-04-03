@@ -25,16 +25,15 @@ function getRaces(req, res){
 			if(req.params.id){
 				data = data[0];
 				if(isJsonRequest(req)){
-				res.json({response: data});
+					res.json({race: data});
 				}else{
-				res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
-				return;
+					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
+					return;
 				}
 			}
 			if(isJsonRequest(req)){
-				res.json({response: data});
+				res.json({races: data});
 			}else{
-				console.log(data);
 				res.render(user.role + '/races/races.ejs', { title: 'Races', bread: ['Races'], user: user, races: data });
 				return;
 			}
@@ -63,7 +62,7 @@ function getWaypointsForRace(req,res){
 			
 				data = data[0];
 				if(isJsonRequest(req)){
-					res.json({response: data.waypoints});
+					res.json({waypoints: data.waypoints});
 				}else{
 					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
 				return;
@@ -93,13 +92,13 @@ function getUsersForWaypoint(req,res){
 				for (var i = 0; i < data.waypoints.length; i++){
 					console.log(data.waypoints[i]._id);
 					console.log(waypointid);
-				if (data.waypoints[i]._id == waypointid){
-					var waypoint = data.waypoints[i];
-				}
-			}	
+					if (data.waypoints[i]._id == waypointid){
+						var waypoint = data.waypoints[i];
+					}
+				}	
 		
 				if(isJsonRequest(req)){
-					res.json({response: waypoint.users});
+					res.json({users: waypoint.users});
 				}else{
 					res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data });
 				return;
@@ -118,14 +117,14 @@ function getUsersForWaypoint(req,res){
 //Add new race to database
 function addRace(req, res){
     //if(req.user.role != "admin") {res.redirect('/');}
-	
+	console.log(req.body);
 	var race = new Race(req.body);
 	race.save()
 		.then(savedRace => {
 			console.log("New race created");
 			res.status(201);
 			if(isJsonRequest(req)){
-				res.json({response: savedRace});
+				res.json({race: savedRace});
 			}else{
 				res.redirect('/races/' + savedRace._id);
 			}
