@@ -15,8 +15,15 @@ function getUsers(req, res){
 		query._id = req.params.id;
 	} 
 
-	var result = User.find(query);
+	if(req.query.localname){ //Check if request contains a country, if it does call the static method in author model
+		User.findByLocalName(req.query.localname, function(err, data) 
+		{
+			if(err) return handleError(req,res,500,err);
+				res.json({response: data});
+		})	
+	}else{
 
+	var result = User.find(query);
 	result
 		.then(data => {
 			// We hebben gezocht op id, dus we gaan geen array teruggeven.
@@ -30,6 +37,7 @@ function getUsers(req, res){
 			}
 		})
 		.fail(err => handleError(req, res, 500, err));
+	}
 }
 
 function addUser(req, res){

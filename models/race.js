@@ -17,4 +17,8 @@ var raceSchema = new mongoose.Schema({
     }]
 });
 
+raceSchema.statics.findByName = function(name,callback){
+    return this.find({name: name},callback);
+}
+
 mongoose.model('Race', raceSchema);
