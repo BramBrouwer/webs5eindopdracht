@@ -1,10 +1,10 @@
 TODO
-A - van alle updates een PUT maken 
-A - tests toevoegen aan login 
+A - van alle updates een PUT maken                             X
+A - tests toevoegen aan login                                  X
 B - filtering op races - naam met quuery string cars           X 
 B - filtering op users - rol of naam met query string vars     X 
 B - documentatie 
-A - tests afmaken 
+A - tests afmaken                                              X
 A - population                                                 X
 B - paging toevoegen aan shit                                  X
 
