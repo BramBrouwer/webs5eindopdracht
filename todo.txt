@@ -1,24 +1,11 @@
 TODO
-A - van alle updates een PUT maken                             X
-A - tests toevoegen aan login                                  X
-B - filtering op races - naam met quuery string cars           X 
-B - filtering op users - rol of naam met query string vars     X 
-B - documentatie 
-A - tests afmaken                                              X
-A - population                                                 X
-B - paging toevoegen aan shit                                  X
-
-zooi online gooien 
-
- NICE TO HAVE
-A nieuwe testdata                                              X
-B TESTEN OF ALLE REFS NOG WERKEN NU SHIT GEUPDATE IS           X
-B - socket client naar server                                  X
-- meervalidatie  (uitzoeken wat externe validatie is)
+ - documentatie 
+B - meervalidatie  (uitzoeken wat externe validatie is)
 B - 2e social signin
 A - admin autorisatie ook in index als middleware  
 A - kan een user alleen binnen een race taggen die hij gejoined is ?
-
+B  - Extra zoek variable bij races of users (moet op emerdere variabelen kunnen zoeken)
+B - Er zijn logische instance en static methods.
 
 ////API DOC
 API key
