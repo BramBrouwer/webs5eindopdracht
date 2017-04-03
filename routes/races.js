@@ -283,7 +283,7 @@ router.route('/:id/waypoints/:waypointid/users')
 	.get(getUsersForWaypoint);
 
 router.route('/:id/state')
-	.post(updateRaceState);
+	.put(updateRaceState);
 
 
 

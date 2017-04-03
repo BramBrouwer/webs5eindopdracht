@@ -68,4 +68,4 @@ io.on('connection', function (socket) {
   console.log('log connected');
 });
 
-//module.exports = app;
+module.exports = app;

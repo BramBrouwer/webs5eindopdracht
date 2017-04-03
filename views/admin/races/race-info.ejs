@@ -9,13 +9,9 @@
                         <div class="col-xs-3">ID:</div> <div class="col-xs-6"><%= race._id %></div>
                     </div>
                    <div class="col-sm-3"> 
-                   
-                    <% if(!race.active) { %>
-                            <form action="/races/<%= race._id%>/state" method="post">
-                         <button class="btn btn-block btn-xs btn-success" style="border: 0px;" name="active" value="true">Start race</button>
-                    </form>
-                        <% }%>        
-                   
+                        <% if(!race.active) { %>
+                            <button id="putRaceState" class="btn btn-block btn-xs btn-success" style="border: 0px;" name="active" value="true">Start Race</button>
+                        <% } %>
                     </div>                    
                 </div>
                 <div class="row">
@@ -32,8 +28,6 @@
                     </div>
                      <div class="col-sm-3">
                          <button id="deleteRace" class="btn btn-block btn-xs btn-danger" style="border: 0px;">Delete</button>
-                    </form>
-                     
                     </div>
                 </div>
                 </div>
@@ -86,6 +80,16 @@
                     }
              });
         });
+        $( "#putRaceState" ).click(function() {
+              $.ajax({
+                        url: '/races/<%= race._id%>/state',
+                        type: 'PUT',
+                        data: {active: true},
+                        success: function(data, textStatus) {
+                            window.location.href = '/races';
+                    }
+             });
+        });
         var socket = io('http://localhost:3000');
         socket.on("checkinLogged"+"<%= race._id%>", function (data) {
             console.log(data.msg);
@@ -94,5 +98,3 @@
    </script>
     
 <% include ../../partials/core/footer %>
-
-
