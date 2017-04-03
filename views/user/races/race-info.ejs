@@ -85,7 +85,8 @@
     
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = io(<%= port %> ||'http://localhost:3000');
+  var socket = io();
+
   socket.on("checkinLogged"+"<%= race._id%>", function (data) {
     console.log(data.msg);
           $('#messages').append($('<li class="list-group-item"></li>').text(data.msg));
