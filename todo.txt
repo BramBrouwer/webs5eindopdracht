@@ -10,12 +10,12 @@ B - paging toevoegen aan shit                                  X
 
 
  NICE TO HAVE
- nieuwe testdata
- TESTEN OF ALLE REFS NOG WERKEN NU SHIT GEUPDATE IS
-- socket client naar server
+A nieuwe testdata
+B TESTEN OF ALLE REFS NOG WERKEN NU SHIT GEUPDATE IS
+B - socket client naar server
 - meervalidatie  (uitzoeken wat externe validatie is)
-- 2e social signin
-- admin autorisatie ook in index als middleware 
+B - 2e social signin
+A - admin autorisatie ook in index als middleware 
 
 
  
@@ -30,7 +30,7 @@ ALGEMENE EISEN
 - Requirements doornemen wat missen we nog, kunnen we makkelijk beter doen, etc.
 
 BUGS TO CHECK 
-- kan een user alleen binnen een race taggen die hij gejoined is ?
+A - kan een user alleen binnen een race taggen die hij gejoined is ?
 ////API DOC
 API key
 AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw

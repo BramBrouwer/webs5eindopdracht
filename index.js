@@ -43,6 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 //require('./routes/login.js')(passport); // Try to pass passport and app AFTER serting up passport/flash
+
 app.use(function (req, res, next) {
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
@@ -96,3 +97,5 @@ function isJsonRequest(req){
 io.on('connection', function (socket) {
   console.log('log connected');
 });
+
+//module.exports = app;
