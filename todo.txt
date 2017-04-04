@@ -4,8 +4,14 @@ B - meervalidatie  (uitzoeken wat externe validatie is)
 B - 2e social signin
 A - admin autorisatie ook in index als middleware  
 A - kan een user alleen binnen een race taggen die hij gejoined is ?
-B  - Extra zoek variable bij races of users (moet op emerdere variabelen kunnen zoeken)
+B  - Extra zoek variable bij races of users (moet op emerdere variabelen kunnen zoeken) X
 B - Er zijn logische instance en static methods.                                            
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!Change google login callback/twitter callback in online version 
+
 
 ////API DOC
 API key
