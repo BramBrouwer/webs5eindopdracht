@@ -142,7 +142,7 @@ subpath.get('/', function (req, res) {
 });
 swagger.configureSwaggerPaths('', 'api-docs', '');
 
-var domain = 'localhost';
+var domain = 'https://webs5eind.herokuapp.com';
 if(argv.domain !== undefined)
     domain = argv.domain;
 else
