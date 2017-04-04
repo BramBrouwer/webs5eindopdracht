@@ -40,5 +40,13 @@ userSchema.statics.findByLocalName = function(name,callback){
     return this.find({'local.name' : name},callback);
 }
 
+userSchema.methods.requiredRole = function(role){
+    if(this.role == role){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema); 

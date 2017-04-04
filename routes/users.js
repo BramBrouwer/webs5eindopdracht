@@ -121,14 +121,23 @@ function tagWaypoint(req,res){
 	var userid = req.params.id;
 	var raceid = req.params.raceid;
 	var waypointid = req.body.waypointid;
-	console.log(req.params);
 	var race;
 	var query = {};
-	query._id = raceid;
-	var result = Race.find(query);	
+	query._id = userid;
+	var result = User.find(query).populate('races');
 	result
 		.then(data => {
-			race = data[0];
+			user = data[0];
+			console.log(user);
+			var race = false;
+			for(var i=0; i < user.races.length; i++){
+				if(user.races[i]._id == raceid){
+					race = user.races[i];
+				}
+			}
+			if(!race){
+				handleError(req, res, 500, 'User is not part of this race.');
+			}
 			for (var i = 0; i < race.waypoints.length; i++){
 				if (race.waypoints[i]._id == waypointid){
 					var waypoint = race.waypoints[i];
@@ -147,9 +156,7 @@ function tagWaypoint(req,res){
 					}
 				}).fail(err => handleError(req, res, 500, err));
 			}else{
-				console.log("User has already tagged this waypoint");
-				res.status(500);
-				return res.json({err: "invalid request"});
+				handleError(req, res, 500, 'User already tagged this waypoint.');
 			}
 		})
 		.fail(err => handleError(req, res, 500, err));
@@ -204,9 +211,6 @@ router.route('/:id/races')
 
 router.route('/:id/races/:raceid/waypoints')
 	.post(tagWaypoint);
-
-router.route('/log')
-	.get(logRace);
 
 module.exports = function (appin,errCallback){
 	console.log('Initializing user routing module');
