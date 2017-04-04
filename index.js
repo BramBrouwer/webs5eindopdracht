@@ -156,6 +156,6 @@ if(argv.port !== undefined)
 else
     console.log('No --port=xxx specified, taking default port ' + port + '.')
 
-var applicationUrl = 'http://' + domain + ':' + port;
+var applicationUrl = 'https://' + domain + ':' + port;
 swagger.configure(applicationUrl, '1.0.0');
 
