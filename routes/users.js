@@ -188,8 +188,9 @@ function addRace(req, res){
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
+
 /*
-TODO: geef de process.env.PORT door aan view
+Emit message to relevant socket
 */
 function logRace(userid,waypointname,raceid){
 		app.io.sockets.emit('checkinLogged'+raceid,{msg: "User: " + userid + " checked in at: "+ waypointname});
