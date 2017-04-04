@@ -128,11 +128,9 @@ function getUsersForWaypoint(req,res){
 //Add new race to database
 function addRace(req, res){
     //if(req.user.role != "admin") {res.redirect('/');}
-	console.log(req.body);
 	var race = new Race(req.body);
 	race.save()
 		.then(savedRace => {
-			console.log("New race created");
 			res.status(201);
 			if(isJsonRequest(req)){
 				res.json({race: savedRace});
@@ -160,7 +158,6 @@ function deleteRace(req,res){
 			res.json({response : "Race deleted"})
 		}
 		else{
-			console.log("Race deleted")
 			res.json({response : "Race deleted (res.redirect werkt niet na een delete request en handmatig method naar GET veranderen werkt ook niet.)"})
 		}
     }
@@ -204,7 +201,6 @@ function addWaypoint(req,res){
 			var curWaypoints = race.waypoints;
 			race.waypoints.push(newWaypoint);
 			race.save().then(savedRace => {
-			console.log('waypoint added');
 				if(isJsonRequest(req)){
 					res.status(200);
 					res.json({response : savedRace})
@@ -228,7 +224,6 @@ function updateRaceState(req,res){
 			{ new: true},
 			function (err,race){
 				if(err)  return res.json({err});
-				console.log("Race started");
 				if(isJsonRequest(req)){
 					res.status(200);
 					res.json({response: race});
@@ -279,7 +274,6 @@ router.route('/:id/waypoints/:waypointid/users')
 
 router.route('/:id/state')
 	.put(updateRaceState);
-
 
 module.exports = function (errCallback){
 	console.log('Initializing race routing module');

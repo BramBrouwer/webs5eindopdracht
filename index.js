@@ -50,13 +50,24 @@ app.use(function (req, res, next) {
         return next();
     if (req.path.startsWith('/login'))
         return next();
-    // if they aren't redirect them to the home page
+    // if they aren't redirect them to the login page
     if(isJsonRequest(req)){
         res.json({err: "Please login first"});
     }else{
         res.redirect('/login');
     }
 });
+
+app.post('/races', requireRole('admin'));
+app.post('/races/*', requireRole('admin'));
+app.delete('/races/*', requireRole('admin'));
+app.put('/races/*', requireRole('admin'));
+app.get('/races/:id/waypoints/:waypointid/users', requireRole('admin'));
+
+app.all('/users', requireRole('admin'));
+app.post('/users', requireRole('admin'));
+
+app.all('/places', requireRole('admin'));
 
 //Routes
 app.use('/', require('./routes/home.js')());
@@ -84,6 +95,18 @@ function handleError(req, res, statusCode, message){
         res.render('error', {error: message});
     }
 };
+
+function requireRole(role) {
+    return function(req, res, next) {
+        if(req.session.user && req.session.user.role === role){
+            next();
+        }else if(isJsonRequest(req)){
+            res.json({err: 'You are not authorized to perform this action.'});
+        }else{
+            res.send(403);
+        }
+    }
+}
 
 //Check if we need to return json or html
 function isJsonRequest(req){

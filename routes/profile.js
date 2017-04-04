@@ -15,8 +15,7 @@ function getProfile(req, res){
         }else{
             res.json({user: req.user});
         }
-        console.log(req.user);
-    }else{   
+    }else{
         res.render('profile.ejs', { title: 'Profile', bread: ['Profile'],  user : user });
     }
 }
