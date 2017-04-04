@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var _ = require('underscore');
 var handleError;
 var app;
+var isJsonRequest;
 //Models
 User = mongoose.model('User');
 Race = mongoose.model('Race');
@@ -47,11 +48,7 @@ function getUsers(req, res){
 			if(req.params.id){
 				data = data[0];
 			}
-			if(isJsonRequest(req)){	
-				return res.json({users: data});
-			}else{
-				return res.json({users: data});  //Er is geen user view
-			}
+			return res.json({users: data});  //Er is geen user view
 		})
 		.fail(err => handleError(req, res, 500, err));
 	}
@@ -196,12 +193,6 @@ function logRace(userid,waypointname,raceid){
 		app.io.sockets.emit('checkinLogged'+raceid,{msg: "User: " + userid + " checked in at: "+ waypointname});
 }
 
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
 
 //Routes
 router.route('/')
@@ -218,9 +209,10 @@ router.route('/:id/races')
 router.route('/:id/races/:raceid/waypoints')
 	.post(tagWaypoint);
 
-module.exports = function (appin,errCallback){
+module.exports = function (appin,errCallback, jsonChecker){
 	console.log('Initializing user routing module');
 	app=appin;
 	handleError = errCallback;
+	isJsonRequest = jsonChecker;
 	return router;
 };

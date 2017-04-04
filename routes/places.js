@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var request = require('request');
 var handleError;
+var isJsonRequest;
 
 function getPlaces(req,res){
         
@@ -27,18 +28,12 @@ function getPlaces(req,res){
         });
 }
 
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
-
 router.route('/')
       .post(getPlaces);
 
-module.exports = function (errCallback){
+module.exports = function (errCallback,jsonChecker){
 	console.log('Initializing places routing module');
+    isJsonRequest = jsonChecker;
 	handleError = errCallback;
 	return router;
 };

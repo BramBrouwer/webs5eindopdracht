@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-
+var isJsonRequest;
 //Get login page (no json response possible)
 function getHome(req, res){
          res.render('login.ejs', { title: 'Login', message: req.flash('loginMessage') });
@@ -66,16 +66,8 @@ router.route('/twitter/callback')
             failureRedirect : '/'
         }));
 
-
-
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
-        
-module.exports = function (){
+module.exports = function (jsonChecker){
+    isJsonRequest = jsonChecker;
 	console.log('Initializing login routing module');
 	return router;
 };

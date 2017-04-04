@@ -71,11 +71,11 @@ app.all('/places', requireRole('admin'));
 
 //Routes
 app.use('/', require('./routes/home.js')());
-app.use('/login', require('./routes/login.js')());
-app.use('/races', require('./routes/races.js')(handleError));
-app.use('/users', require('./routes/users.js')(app,handleError));
-app.use('/profile', require('./routes/profile.js')());
-app.use('/places',require('./routes/places.js')(handleError));
+app.use('/login', require('./routes/login.js')(isJsonRequest));
+app.use('/races', require('./routes/races.js')(handleError,isJsonRequest));
+app.use('/users', require('./routes/users.js')(app,handleError,isJsonRequest));
+app.use('/profile', require('./routes/profile.js')(isJsonRequest));
+app.use('/places',require('./routes/places.js')(handleError,isJsonRequest));
 
 //Error handler
 function handleError(req, res, statusCode, message){
