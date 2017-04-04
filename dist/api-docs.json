@@ -6,7 +6,7 @@
         "description": "Sample spec for Swagger",
         "termsOfService": "http://swagger.io/terms/"
     },
-    "basePath": "localhost:3000",
+    "basePath": "/",
     "tags": [
         {
             "name": "RestRace",
