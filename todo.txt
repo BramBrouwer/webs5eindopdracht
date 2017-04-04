@@ -5,7 +5,7 @@ B - 2e social signin
 A - admin autorisatie ook in index als middleware  
 A - kan een user alleen binnen een race taggen die hij gejoined is ?
 B  - Extra zoek variable bij races of users (moet op emerdere variabelen kunnen zoeken)
-B - Er zijn logische instance en static methods.
+B - Er zijn logische instance en static methods.                                            
 
 ////API DOC
 API key
