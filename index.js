@@ -20,10 +20,10 @@ server.listen(process.env.PORT || 3000);
 
 
 //LOCAL DATABSAE
-//mongoose.connect('mongodb://localhost:27017/restrace');
+mongoose.connect('mongodb://localhost:27017/restrace');
 
 //MLAB DATABASE
-mongoose.connect('mongodb://admin:admin@ds041506.mlab.com:41506/webs5eindropdracht');
+//mongoose.connect('mongodb://admin:admin@ds041506.mlab.com:41506/webs5eindropdracht');
 
 require('./config/passport')(passport); // pass passport for configuration
 
@@ -50,7 +50,7 @@ app.use(function (req, res, next) {
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
-    if (req.path.startsWith('/login'))
+    if (req.path.startsWith('/login') || req.path.startsWith('/v1') ||req.path.startsWith('/swagger') || req.path.startsWith('/api-docs'))
         return next();
     // if they aren't redirect them to the login page
     if(isJsonRequest(req)){
