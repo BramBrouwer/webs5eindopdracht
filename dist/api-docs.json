@@ -6,7 +6,7 @@
         "description": "Sample spec for Swagger",
         "termsOfService": "http://swagger.io/terms/"
     },
-    "basePath": "https://webs5eind.herokuapp.com",
+    "basePath": "webs5eind.herokuapp.com",
     "tags": [
         {
             "name": "RestRace",
