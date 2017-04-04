@@ -5,5 +5,7 @@
     <% include profiles/google %>
 <% }if(JSON.stringify(user.local) != '{}'){ %>
     <% include profiles/local %>
+<% }if(JSON.stringify(user.twitter) != '{}'){ %>
+    <% include profiles/twitter %>
 <% } %>
 <% include partials/core/footer %>

@@ -4,6 +4,7 @@ var _ = require('underscore');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var handleError;
+var isJsonRequest;
 //Models
 Race = mongoose.model('Race');
 User = mongoose.model('User');
@@ -256,13 +257,6 @@ function logRaceInfo(req,res){
   });
 }
 
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
-
 //Routes
 router.route('/')
     .get(getRaces)
@@ -289,8 +283,9 @@ router.route('/:id/state')
 	.put(updateRaceState);
 
 
-module.exports = function (errCallback){
+module.exports = function (errCallback,jsonChecker){
 	console.log('Initializing race routing module');
+	isJsonRequest = jsonChecker;
 	handleError = errCallback;
 	return router;
 };

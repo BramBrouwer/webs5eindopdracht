@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var _ = require('underscore');
 var mongoose = require('mongoose');
-
+var isJsonRequest;
 //Functions
 
 //API
@@ -30,20 +30,14 @@ function logout(req, res) {
     }
 }
 
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
-
 //Routes
 router.route('/')
     .get(getProfile);
 router.route('/logout')
     .get(logout);
 
-module.exports = function (){
+module.exports = function (jsonChecker){
 	console.log('Initializing profile routing module');
+    isJsonRequest = jsonChecker;
 	return router;
 };;
