@@ -12,6 +12,7 @@ Race = mongoose.model('Race');
 function requestGET(route, statusCode, done){
 	request(app)
 		.get(route)
+        .set('Accept', 'application/json')
 		.expect(statusCode)
 		.end(function(err, res){
 			if(err){ return done(err); }
@@ -94,15 +95,13 @@ describe('Testing users route', function(){
                 Race.find({}).then(data => {
                     raceID = data[0]._id;
                     waypoints = data[0].waypoints;
-                    var body = {raceid:  data[0]._id, racename: data[0].name};
+                    var body = {raceid:  data[0]._id};
                     requestPOST('/' + userID + '/races', body, 200, done());
                 });
             });
             it('should post and return a waypoint', function(done){
-                User.find({}).then(data => {
-                    var body = {waypointid: waypoints[0]._id};
-                    requestPOST('/users/' + userID + '/races/' + raceID + '/waypoints' , body, 200, done());
-                });
+                var body = {waypointid: waypoints[0]._id};
+                requestPOST('/users/' + userID + '/races/' + raceID + '/waypoints' , body, 200, done());
             });
         });
     });

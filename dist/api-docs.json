@@ -1,0 +1,205 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Sample spec",
+        "description": "Sample spec for Swagger",
+        "termsOfService": "http://swagger.io/terms/"
+    },
+    "basePath": "localhost:3000",
+    "tags": [
+        {
+            "name": "RestRace",
+            "description": "API for RestRace"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/races": {
+            "get": {
+                "tags": [
+                    "Races"
+                ],
+                "description": "Get all races",
+                "operationId": "getRaces",
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get response",
+                        "schema": {
+                            "$ref": "#/definitions/race"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Races"
+                ],
+                "description": "Post a new race",
+                "operationId": "addRace",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "name",
+                    "in": "formData",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Post response",
+                        "schema": {
+                            "$ref": "#/definitions/race"
+                        }
+                    }
+                }
+            }
+        },
+        "/races/{id}": {
+            "get": {
+                "tags": [
+                    "Races"
+                ],
+                "description": "Get a race",
+                "operationId": "getRace",
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Get response",
+                        "schema": {
+                            "$ref": "#/definitions/race"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Races"
+                ],
+                "description": "Delete a race",
+                "operationId": "deleteRace",
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses":{
+                    "200": {
+                        "description": "Race deleted"
+                    },
+                    "400":{  
+                        "description":"Invalid ID supplied"
+                    },
+                    "404":{  
+                        "description":"Race not found"
+                    }
+                }
+            }
+        },
+        "/races/{id}/waypoints": {
+            
+        }
+    },
+    "definitions": {
+        "race": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "required": true
+                },
+                "name": {
+                    "type": "string",
+                    "required": true
+                },
+                "active": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "waypoints": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/waypoint"
+                    }
+                }
+            }
+        },
+        "user": {
+            "properties": {
+                "local": {
+                    "email": "string",
+                    "name": "string",
+                    "password": "string"
+                },
+                "google": {
+                    "id": "string",
+                    "token": "string",
+                    "email": "string",
+                    "name": "string"
+                },
+                "twitter": {
+                    "id": "string",
+                    "token": "string",
+                    "displayName": "string",
+                    "username": "string"
+                },
+                "role": {
+                    "type": "string",
+                    "default": "user"
+                },
+                "races": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/race"
+                    }
+                }
+            }
+        },
+        "waypoint": {
+            "properties": {
+                "googleid": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

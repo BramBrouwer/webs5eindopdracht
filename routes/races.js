@@ -165,7 +165,6 @@ function getNewRace(req,res){
 
 //Delete race (via ajax request)
 function deleteRace(req,res){
-	if(req.user.role != "admin") {res.redirect('/');}
 	Race.remove({ _id: req.params.id }, function(err) {
     if (!err) {
 		res.status(200);
@@ -194,8 +193,6 @@ function getNewWaypoint(req,res){
 }
 
 function addWaypoint(req,res){
-	if(req.user.role != "admin") {res.redirect('/');}
-	
 	var race;
 	var query = {};
 	query._id = req.params.id;
@@ -231,7 +228,6 @@ function addWaypoint(req,res){
 
 //Update race state
 function updateRaceState(req,res){
-	if(req.user.role != "admin") {res.redirect('/');}
 	var active = req.body.active;
 	var raceid = req.params.id;
 	Race
