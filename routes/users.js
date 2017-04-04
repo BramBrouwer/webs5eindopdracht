@@ -167,7 +167,7 @@ function tagWaypoint(req,res){
 		.fail(err => handleError(req, res, 500, err));
 }
 /*
-Join race //TODO werkende met nieuw model 
+Join race
 */
 function addRace(req, res){
 	var query = {};
