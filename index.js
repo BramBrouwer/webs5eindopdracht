@@ -130,8 +130,8 @@ app.use(express.static('dist'));
 app.use("/v1", subpath);
 swagger.setAppHandler(subpath);
 swagger.setApiInfo({
-    title: "example API",
-    description: "API to do something, manage something...",
+    title: "webs5eindropdracht",
+    description: "webs5eindropdracht",
     termsOfServiceUrl: "",
     contact: "yourname@something.com",
     license: "",

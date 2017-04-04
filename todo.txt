@@ -1,6 +1,6 @@
 TODO
- - documentatie 
-- Register knop weg
+
+
 - alles aflopen 
 - online callbacks
 
