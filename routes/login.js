@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-
+var isJsonRequest;
 //Get login page (no json response possible)
 function getHome(req, res){
          res.render('login.ejs', { title: 'Login', message: req.flash('loginMessage') });
@@ -25,7 +25,7 @@ function getloginFailure(req,res){
         res.redirect('/');
     }
 }
-
+//-----------------LOCAL LOGIN
 //Local login
 router.route('/')
     .get(getHome)
@@ -35,6 +35,15 @@ router.route('/')
         failureFlash : true // allow flash messages
     }));
 
+//Local login success   
+router.route('/success')
+      .get(getLoginSuccess);
+
+//Local login failure
+router.route('/failure')
+    .get(getloginFailure);
+
+//---------------GOOGLE LOGIN
 //Google login 
 router.route('/google')
     .get(passport.authenticate('google', {
@@ -47,23 +56,18 @@ router.route('/google/callback')
                 successRedirect : '/',
                 failureRedirect : '/'
         }));
-        
-//Local login success   
-router.route('/success')
-      .get(getLoginSuccess);
+//----------TWITTER ICON
+router.route('/twitter')
+    .get(passport.authenticate('twitter'));
 
-//Local login failure
-router.route('/failure')
-    .get(getloginFailure);
+router.route('/twitter/callback')
+    .get(passport.authenticate('twitter', {
+            successRedirect : '/',
+            failureRedirect : '/'
+        }));
 
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
-        
-module.exports = function (){
+module.exports = function (jsonChecker){
+    isJsonRequest = jsonChecker;
 	console.log('Initializing login routing module');
 	return router;
 };

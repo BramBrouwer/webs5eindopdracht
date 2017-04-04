@@ -1,36 +1,12 @@
 TODO
-A - van alle updates een PUT maken                             X
-A - tests toevoegen aan login                                  X
-B - filtering op races - naam met quuery string cars           X 
-B - filtering op users - rol of naam met query string vars     X 
-B - documentatie 
-A - tests afmaken                                              X
-A - population                                                 X
-B - paging toevoegen aan shit                                  X
+ - documentatie 
 
 
- NICE TO HAVE
-A nieuwe testdata
-B TESTEN OF ALLE REFS NOG WERKEN NU SHIT GEUPDATE IS
-B - socket client naar server
-- meervalidatie  (uitzoeken wat externe validatie is)
-B - 2e social signin
-A - admin autorisatie ook in index als middleware 
 
 
- 
- op alle relevante json return values voor deze routes V
-        - race/id/waypoints
-        - race/id
-        - races     
+!!!!!!!!!!!!!!!!!!!!!Change google login callback/twitter callback in online version 
 
-ALGEMENE EISEN
-- tests
-- documentatie
-- Requirements doornemen wat missen we nog, kunnen we makkelijk beter doen, etc.
 
-BUGS TO CHECK 
-A - kan een user alleen binnen een race taggen die hij gejoined is ?
 ////API DOC
 API key
 AIzaSyCYrzndHohfx6RdcoqVEsFify9JQ--xagw

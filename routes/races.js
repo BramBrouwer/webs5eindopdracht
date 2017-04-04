@@ -4,6 +4,7 @@ var _ = require('underscore');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var handleError;
+var isJsonRequest;
 //Models
 Race = mongoose.model('Race');
 User = mongoose.model('User');
@@ -31,7 +32,7 @@ function getRaces(req, res){
 		pageIndex = parseInt(req.query.pageindex);
 	}else pageIndex = 0;
 
-	if(req.query.name){ //Check if request contains a country, if it does call the static method in author model
+	if(req.query.name){ // Get race by name
 		Race.findByName(req.query.name, function(err, data) 
 		{
 			if(err) return handleError(req,res,500,err);
@@ -42,7 +43,19 @@ function getRaces(req, res){
 			}
 		 	
 		})	
-	}else{
+	}else if(req.query.state) //Get race by state
+	{
+		Race.findByIsActive(req.query.state, function(err, data) 
+		{
+			if(err) return handleError(req,res,500,err);
+			if(isJsonRequest(req)){
+				res.json({response: data});
+			}else{
+				res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data  ,port: process.env.PORT});
+			}
+		 	
+		})	
+	}else{ //Get all races || get race by id
 	var result = Race.find(query).limit(pageSize).skip(pageIndex);
 	result
 		.then(data => {
@@ -152,7 +165,6 @@ function getNewRace(req,res){
 
 //Delete race (via ajax request)
 function deleteRace(req,res){
-	if(req.user.role != "admin") {res.redirect('/');}
 	Race.remove({ _id: req.params.id }, function(err) {
     if (!err) {
 		res.status(200);
@@ -181,8 +193,6 @@ function getNewWaypoint(req,res){
 }
 
 function addWaypoint(req,res){
-	if(req.user.role != "admin") {res.redirect('/');}
-	
 	var race;
 	var query = {};
 	query._id = req.params.id;
@@ -218,7 +228,6 @@ function addWaypoint(req,res){
 
 //Update race state
 function updateRaceState(req,res){
-	if(req.user.role != "admin") {res.redirect('/');}
 	var active = req.body.active;
 	var raceid = req.params.id;
 	Race
@@ -248,13 +257,6 @@ function logRaceInfo(req,res){
   });
 }
 
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
-
 //Routes
 router.route('/')
     .get(getRaces)
@@ -281,8 +283,9 @@ router.route('/:id/state')
 	.put(updateRaceState);
 
 
-module.exports = function (errCallback){
+module.exports = function (errCallback,jsonChecker){
 	console.log('Initializing race routing module');
+	isJsonRequest = jsonChecker;
 	handleError = errCallback;
 	return router;
 };

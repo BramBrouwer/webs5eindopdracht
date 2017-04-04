@@ -1,6 +1,7 @@
 var request = require('supertest');
 var expect = require('chai').expect;
 var should = require('chai').should();
+
 var app = require('../index');
 var mongoose = require('mongoose');
 mongoose.Promise = require('q').Promise;
@@ -85,13 +86,12 @@ describe('Testing races route', function(){
             });
             it('should return 500 when body is invalid', function(done){
                 var body = {invalid: 'body'};
-                requestPOST('/races/' + raceID + '/waypoints', body, 500, done);
+                requestPOST('/races/' + raceID + '/waypoints', body, 500, done());
             });
         });
         describe('with valid params', function(){
             it('should post and return a new waypoint', function(done){
                 var body = {googleid: 'google id', name: 'mocha test race'};
-                var expectedData = new Race(body);
                 requestPOST('/races/' + raceID + '/waypoints', body, 200, done());
             });
         });

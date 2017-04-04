@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var _ = require('underscore');
 var handleError;
 var app;
+var isJsonRequest;
 //Models
 User = mongoose.model('User');
 Race = mongoose.model('Race');
@@ -27,14 +28,19 @@ function getUsers(req, res){
 		pageIndex = parseInt(req.query.pageindex);
 	}else pageIndex = 0;
 
-	if(req.query.localname){ //Check if request contains a country, if it does call the static method in author model
+	if(req.query.localname){ // Find by local name
 		User.findByLocalName(req.query.localname, function(err, data) 
 		{
 			if(err) return handleError(req,res,500,err);
 				res.json({response: data});
 		})	
-	}else{
-
+	}else if(req.query.role){ //Find by role
+	User.findByRole(req.query.role, function(err, data) 
+		{
+			if(err) return handleError(req,res,500,err);
+				res.json({response: data});
+		})	
+	}else{ 	//Get all users ||  get all users by id 
 	var result = User.find(query).limit(pageSize).skip(pageIndex);;
 	result
 		.then(data => {
@@ -42,11 +48,7 @@ function getUsers(req, res){
 			if(req.params.id){
 				data = data[0];
 			}
-			if(isJsonRequest(req)){	
-				return res.json({users: data});
-			}else{
-				return res.json({users: data});  //Er is geen user view
-			}
+			return res.json({users: data});  //Er is geen user view
 		})
 		.fail(err => handleError(req, res, 500, err));
 	}
@@ -121,14 +123,23 @@ function tagWaypoint(req,res){
 	var userid = req.params.id;
 	var raceid = req.params.raceid;
 	var waypointid = req.body.waypointid;
-	console.log(req.params);
 	var race;
 	var query = {};
-	query._id = raceid;
-	var result = Race.find(query);	
+	query._id = userid;
+	var result = User.find(query).populate('races');
 	result
 		.then(data => {
-			race = data[0];
+			user = data[0];
+			console.log(user);
+			var race = false;
+			for(var i=0; i < user.races.length; i++){
+				if(user.races[i]._id == raceid){
+					race = user.races[i];
+				}
+			}
+			if(!race){
+				handleError(req, res, 500, 'User is not part of this race.');
+			}
 			for (var i = 0; i < race.waypoints.length; i++){
 				if (race.waypoints[i]._id == waypointid){
 					var waypoint = race.waypoints[i];
@@ -147,15 +158,13 @@ function tagWaypoint(req,res){
 					}
 				}).fail(err => handleError(req, res, 500, err));
 			}else{
-				console.log("User has already tagged this waypoint");
-				res.status(500);
-				return res.json({err: "invalid request"});
+				handleError(req, res, 500, 'User already tagged this waypoint.');
 			}
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
 /*
-Join race //TODO werkende met nieuw model 
+Join race
 */
 function addRace(req, res){
 	var query = {};
@@ -176,19 +185,14 @@ function addRace(req, res){
 		})
 		.fail(err => handleError(req, res, 500, err));
 }
+
 /*
-TODO: geef de process.env.PORT door aan view
+Emit message to relevant socket
 */
 function logRace(userid,waypointname,raceid){
 		app.io.sockets.emit('checkinLogged'+raceid,{msg: "User: " + userid + " checked in at: "+ waypointname});
 }
 
-function isJsonRequest(req){
-      if(req.accepts('html') == 'html'){
-          return false;
-      }
-      return true;
-}
 
 //Routes
 router.route('/')
@@ -205,12 +209,10 @@ router.route('/:id/races')
 router.route('/:id/races/:raceid/waypoints')
 	.post(tagWaypoint);
 
-router.route('/log')
-	.get(logRace);
-
-module.exports = function (appin,errCallback){
+module.exports = function (appin,errCallback, jsonChecker){
 	console.log('Initializing user routing module');
 	app=appin;
 	handleError = errCallback;
+	isJsonRequest = jsonChecker;
 	return router;
 };
