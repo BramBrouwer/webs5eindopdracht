@@ -21,4 +21,8 @@ raceSchema.statics.findByName = function(name,callback){
     return this.find({name: name},callback);
 }
 
+raceSchema.statics.findByIsActive = function(state,callback){
+    return this.find({active: state},callback);
+}
+
 mongoose.model('Race', raceSchema);
