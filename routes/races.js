@@ -31,7 +31,7 @@ function getRaces(req, res){
 		pageIndex = parseInt(req.query.pageindex);
 	}else pageIndex = 0;
 
-	if(req.query.name){ //Check if request contains a country, if it does call the static method in author model
+	if(req.query.name){ // Get race by name
 		Race.findByName(req.query.name, function(err, data) 
 		{
 			if(err) return handleError(req,res,500,err);
@@ -42,7 +42,19 @@ function getRaces(req, res){
 			}
 		 	
 		})	
-	}else{
+	}else if(req.query.state) //Get race by state
+	{
+		Race.findByIsActive(req.query.state, function(err, data) 
+		{
+			if(err) return handleError(req,res,500,err);
+			if(isJsonRequest(req)){
+				res.json({response: data});
+			}else{
+				res.render(user.role + '/races/race-info.ejs', { title: 'Race', bread: ['Races', 'Race'], user: user, race: data  ,port: process.env.PORT});
+			}
+		 	
+		})	
+	}else{ //Get all races || get race by id
 	var result = Race.find(query).limit(pageSize).skip(pageIndex);
 	result
 		.then(data => {
