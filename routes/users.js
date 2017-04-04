@@ -27,14 +27,19 @@ function getUsers(req, res){
 		pageIndex = parseInt(req.query.pageindex);
 	}else pageIndex = 0;
 
-	if(req.query.localname){ //Check if request contains a country, if it does call the static method in author model
+	if(req.query.localname){ // Find by local name
 		User.findByLocalName(req.query.localname, function(err, data) 
 		{
 			if(err) return handleError(req,res,500,err);
 				res.json({response: data});
 		})	
-	}else{
-
+	}else if(req.query.role){ //Find by role
+	User.findByRole(req.query.role, function(err, data) 
+		{
+			if(err) return handleError(req,res,500,err);
+				res.json({response: data});
+		})	
+	}else{ 	//Get all users ||  get all users by id 
 	var result = User.find(query).limit(pageSize).skip(pageIndex);;
 	result
 		.then(data => {
