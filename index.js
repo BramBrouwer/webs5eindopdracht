@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash = require('connect-flash');
 var session      = require('express-session');
+var argv = require('minimist')(process.argv.slice(2));
+var swagger = require("swagger-node-express");
 
 var http = require('http');
 var express = require('express'),
@@ -44,19 +46,19 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 //require('./routes/login.js')(passport); // Try to pass passport and app AFTER serting up passport/flash
 
-app.use(function (req, res, next) {
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-    if (req.path.startsWith('/login'))
-        return next();
-    // if they aren't redirect them to the login page
-    if(isJsonRequest(req)){
-        res.json({err: "Please login first"});
-    }else{
-        res.redirect('/login');
-    }
-});
+// app.use(function (req, res, next) {
+//     // if user is authenticated in the session, carry on
+//     if (req.isAuthenticated())
+//         return next();
+//     if (req.path.startsWith('/login'))
+//         return next();
+//     // if they aren't redirect them to the login page
+//     if(isJsonRequest(req)){
+//         res.json({err: "Please login first"});
+//     }else{
+//         res.redirect('/login');
+//     }
+// });
 
 app.post('/races', requireRole('admin'));
 app.post('/races/*', requireRole('admin'));
@@ -98,7 +100,7 @@ function handleError(req, res, statusCode, message){
 
 function requireRole(role) {
     return function(req, res, next) {
-        if(req.session.user && req.session.user.role === role){
+        if(req.user && req.user.role === role){
             next();
         }else if(isJsonRequest(req)){
             res.json({err: 'You are not authorized to perform this action.'});
@@ -120,5 +122,32 @@ function isJsonRequest(req){
 io.on('connection', function (socket) {
   console.log('log connected');
 });
+
+
+//swagger
+var subpath = express();
+app.use(express.static('dist'));
+app.use("/v1", subpath);
+swagger.setAppHandler(subpath);
+swagger.setApiInfo({
+    title: "example API",
+    description: "API to do something, manage something...",
+    termsOfServiceUrl: "",
+    contact: "yourname@something.com",
+    license: "",
+    licenseUrl: ""
+});
+subpath.get('/', function (req, res) {
+    res.sendfile(__dirname + '/dist/index.html');
+});
+swagger.configureSwaggerPaths('', 'api-docs', '');
+
+var domain = 'localhost';
+if(argv.domain !== undefined)
+    domain = argv.domain;
+else
+    console.log('No --domain=xxx specified, taking default hostname "localhost".');
+var applicationUrl = 'http://' + domain;
+swagger.configure(applicationUrl, '1.0.0');
 
 //module.exports = app;
