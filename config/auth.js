@@ -9,5 +9,8 @@ module.exports = {
         'callbackURL'   : 'http://localhost:3000/login/google/callback'
     },
       'twitterAuth' : {
+        'consumerKey'       : '3kfGuirnBAafCXbSL9nijflp8',
+        'consumerSecret'    : 'NcfGgzBE8SrAS9jeBP5hTn13Hvahn1RsZc9Dx2SmwaMWJL2xok',
+        'callbackURL'       : 'http://localhost:3000/auth/twitter/callback'
     }
 };
