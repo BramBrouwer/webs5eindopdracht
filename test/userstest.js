@@ -57,7 +57,7 @@ describe('Testing users route', function(){
         describe('with valid params', function(){
             it('should return the right user', function(done){
                 user = User.find({}).then(data => {
-                    userID = data[0]._id;
+                    userID = data[1]._id;
                     requestGET('/users/' + userID, 200, done())
                 });
             });
@@ -93,15 +93,17 @@ describe('Testing users route', function(){
         describe('with valid params', function(){
             it('should post and return a race', function(done){
                 Race.find({}).then(data => {
-                    raceID = data[0]._id;
-                    waypoints = data[0].waypoints;
-                    var body = {raceid:  data[0]._id};
+                    raceID = data[1]._id;
+                    waypoints = data[1].waypoints;
+                    var body = {raceid:  raceID};
                     requestPOST('/' + userID + '/races', body, 200, done());
                 });
             });
             it('should post and return a waypoint', function(done){
-                var body = {waypointid: waypoints[0]._id};
-                requestPOST('/users/' + userID + '/races/' + raceID + '/waypoints' , body, 200, done());
+                User.find({}).then(data => {
+                    var body = {waypointid: waypoints[0]._id};
+                    requestPOST('/users/' + userID + '/races/' + raceID + '/waypoints' , body, 200, done());
+                });
             });
         });
     });

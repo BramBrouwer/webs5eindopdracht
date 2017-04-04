@@ -58,8 +58,8 @@ describe('Testing races route', function(){
 
         describe('with valid params', function(){
             Race.find({}).then(data => {
-                raceID = data[0]._id;
-                waypointID = data[0].waypoints[0]._id;
+                raceID = data[1]._id;
+                waypointID = data[1].waypoints[0]._id;
                 it('should return the right race', function(done){
                         requestGET('/races/' + raceID, 200, done());
                 });

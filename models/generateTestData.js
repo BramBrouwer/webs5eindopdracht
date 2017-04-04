@@ -42,6 +42,9 @@ function fillTestUsers(){
     function fillTestRaces(){
         var testData = [
             {
+                name: "Random Kroegentocht"
+            },
+            {
                 name: "Kroegentocht Best",
                 active: true,
                 waypoints : [
@@ -91,9 +94,6 @@ function fillTestUsers(){
                         name:     "De Steakfabriek"
                     }
                 ]
-            },
-            {
-                name: "Random Kroegentocht"
             }
         ]
         
@@ -101,7 +101,7 @@ function fillTestUsers(){
             if(data.length == 0){
 			    console.log('Creating races testdata');
 			    testData.forEach(function(race){
-				new Race(race).save();
+				new Race(race).save();  
 			    });
 		    } 
             else
