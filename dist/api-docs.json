@@ -6,7 +6,7 @@
         "description": "Sample spec for Swagger",
         "termsOfService": "http://swagger.io/terms/"
     },
-    "basePath": "localhost:3000",
+    "basePath": "webs5eind.herokuapp.com",
     "tags": [
         {
             "name": "RestRace",
@@ -14,7 +14,8 @@
         }
     ],
     "schemes": [
-        "http"
+        "http",
+        "https"
     ],
     "consumes": [
         "application/json"

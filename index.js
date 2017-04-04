@@ -20,10 +20,10 @@ server.listen(process.env.PORT || 3000);
 
 
 //LOCAL DATABSAE
-mongoose.connect('mongodb://localhost:27017/restrace');
+//mongoose.connect('mongodb://localhost:27017/restrace');
 
 //MLAB DATABASE
-//mongoose.connect('mongodb://admin:admin@ds041506.mlab.com:41506/webs5eindropdracht');
+mongoose.connect('mongodb://admin:admin@ds041506.mlab.com:41506/webs5eindropdracht');
 
 require('./config/passport')(passport); // pass passport for configuration
 
@@ -46,19 +46,19 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 //require('./routes/login.js')(passport); // Try to pass passport and app AFTER serting up passport/flash
 
-// app.use(function (req, res, next) {
-//     // if user is authenticated in the session, carry on
-//     if (req.isAuthenticated())
-//         return next();
-//     if (req.path.startsWith('/login'))
-//         return next();
-//     // if they aren't redirect them to the login page
-//     if(isJsonRequest(req)){
-//         res.json({err: "Please login first"});
-//     }else{
-//         res.redirect('/login');
-//     }
-// });
+app.use(function (req, res, next) {
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+    if (req.path.startsWith('/login') || req.path.startsWith('/v1') ||req.path.startsWith('/swagger') || req.path.startsWith('/api-docs'))
+        return next();
+    // if they aren't redirect them to the login page
+    if(isJsonRequest(req)){
+        res.json({err: "Please login first"});
+    }else{
+        res.redirect('/login');
+    }
+});
 
 app.post('/races', requireRole('admin'));
 app.post('/races/*', requireRole('admin'));
@@ -142,12 +142,20 @@ subpath.get('/', function (req, res) {
 });
 swagger.configureSwaggerPaths('', 'api-docs', '');
 
+// Configure the API domain
 var domain = 'localhost';
 if(argv.domain !== undefined)
     domain = argv.domain;
 else
-    console.log('No --domain=xxx specified, taking default hostname "localhost".');
-var applicationUrl = 'http://' + domain;
+    console.log('No --domain=xxx specified, taking default hostname "localhost".')
+
+// Configure the API port
+var port = 3000;
+if(argv.port !== undefined)
+    port = argv.port;
+else
+    console.log('No --port=xxx specified, taking default port ' + port + '.')
+
+var applicationUrl = 'https://' + domain + ':' + port;
 swagger.configure(applicationUrl, '1.0.0');
 
-//module.exports = app;
