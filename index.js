@@ -142,11 +142,20 @@ subpath.get('/', function (req, res) {
 });
 swagger.configureSwaggerPaths('', 'api-docs', '');
 
-var domain = 'https://webs5eind.herokuapp.com:' + process.env.PORT;
+// Configure the API domain
+var domain = 'localhost';
 if(argv.domain !== undefined)
     domain = argv.domain;
 else
-    console.log('No --domain=xxx specified, taking default hostname "localhost".');
-var applicationUrl = 'http://' + domain;
+    console.log('No --domain=xxx specified, taking default hostname "localhost".')
+
+// Configure the API port
+var port = 3000;
+if(argv.port !== undefined)
+    port = argv.port;
+else
+    console.log('No --port=xxx specified, taking default port ' + port + '.')
+
+var applicationUrl = 'http://' + domain + ':' + port;
 swagger.configure(applicationUrl, '1.0.0');
 
