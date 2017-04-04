@@ -39,7 +39,16 @@
                     "200": {
                         "description": "Get response",
                         "schema": {
+                            "type": "array",
+                            "items": {
                             "$ref": "#/definitions/race"
+                          }
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
                         }
                     }
                 }
@@ -64,10 +73,16 @@
                     "required": true
                 }],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Post response",
                         "schema": {
                             "$ref": "#/definitions/race"
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
                         }
                     }
                 }
@@ -95,6 +110,12 @@
                         "description": "Get response",
                         "schema": {
                             "$ref": "#/definitions/race"
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
                         }
                     }
                 }
@@ -124,13 +145,493 @@
                     },
                     "404":{  
                         "description":"Race not found"
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
                     }
                 }
             }
         },
         "/races/{id}/waypoints": {
-            
+
+               "get": {
+                "tags": [
+                    "Races"
+                ],
+                "description": "Get a races waypoints",
+                "operationId": "getWaypointsForRace",
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Get response",
+                         "schema": {
+                            "type": "array",
+                            "items": {
+                            "$ref": "#/definitions/waypoint"
+                          }
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Races"
+                ],
+                "description": "Add waypoint to a race",
+                "operationId": "addWaypointToRace",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "name",
+                    "in": "formData",
+                    "type": "string",
+                    "required": true
+                },{
+                    "name": "googleid",
+                    "in": "formData",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Post response",
+                        "schema": {
+                            "$ref": "#/definitions/race"
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+            }
+
+    },         
+    "/races/{id}/waypoints{id}/users": {
+
+    "get": {
+            "tags": [
+                "Users"
+            ],
+            "description": "Get a waypoints users",
+            "operationId": "getUsersForWaypoint",
+            "produces": [
+                "application/json",
+                "text/html"
+            ],
+            "parameters": [{
+                "name": "id",
+                "in": "path",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "waypointid",
+                "in": "path",
+                "type": "string",
+                "required": true
+            }],
+            "responses": {
+                "200": {
+                    "description": "Get response",
+                        "schema": {
+                        "type": "array",
+                        "items": {
+                        "$ref": "#/definitions/user"
+                        }
+                    }
+                },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+            }
+            }
+    },
+    "/races/{id}/state" : {
+    "put": {
+        "tags": [
+                    "Races"
+                ],
+                "description": "Update race state",
+                "operationId": "updateRaceState",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                },{
+                    "name": "state",
+                    "in": "formData",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Post response",
+                        "schema": {
+                            "$ref": "#/definitions/race"
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+        }   
+    },
+    "/users" : {
+        "get": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Get all users",
+                "operationId": "getUsers",
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                            "$ref": "#/definitions/user"
+                          }
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Post a new user",
+                "operationId": "postUser",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "user",
+                    "in": "formData",
+                    "type": "User",
+                    "required": true
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Post response",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+            }
+    },
+    "/users/{id}" : {
+
+        "get": {
+            "tags": [
+                "Users"
+            ],
+            "description": "Get a user by id",
+            "operationId": "getUserById",
+            "produces": [
+                "application/json",
+                "text/html"
+            ],
+            "parameters": [{
+                "name": "id",
+                "in": "path",
+                "type": "string",
+                "required": true
+            }],
+            "responses": {
+                "200": {
+                    "description": "Get response",
+                    "schema": {
+                        "$ref": "#/definitions/user"
+                    }
+                },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+            }
         }
+    },
+    "/users/{id}/races" : {
+        "get": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Get a users races",
+                "operationId": "getRacesForUser",
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Get response",
+                         "schema": {
+                            "type": "array",
+                            "items": {
+                            "$ref": "#/definitions/race"
+                          }
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Join a race",
+                "operationId": "joinRace",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Post response",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+            }
+     },
+      "/users/{id}/races/{id}/waypoints" : {
+
+          "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Check in to a waypoint",
+                "operationId": "tagWaypoint",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                },{
+                    "name": "raceId",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                },{
+                    "name": "waypointid",
+                    "in": "formData",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Post response",
+                        "schema": {
+                            "$ref": "#/definitions/race"
+                        }
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+            }
+      },
+      "/login": {
+          "post": {
+                "tags": [
+                    "Login"
+                ],
+                "description": "Login as local user",
+                "operationId": "loginLocal",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "email",
+                    "in": "formData",
+                    "type": "string",
+                    "required": true
+                },{
+                    "name": "password",
+                    "in": "formData",
+                    "type":"string",
+                    "required":true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Succesfully logged in"
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+            }
+      },
+      "/places" : {
+          "post": {
+                "tags": [
+                    "Places"
+                ],
+                "description": "Get places from google api",
+                "operationId": "getPlaces",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "parameters": [{
+                    "name": "location",
+                    "in": "formData",
+                    "type": "string",
+                    "required": true
+                },{
+                    "name": "radius",
+                    "in": "formData",
+                    "type":"string",
+                    "required":true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "https://developers.google.com/places/documentation/"
+                    },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                }
+            }
+      },
+      "/logout" : {
+            "get": {
+                "tags": [
+                    "Logout"
+                ],
+                "description": "Logout user in current session",
+                "operationId": "logoutUser",
+                "produces": [
+                    "application/json",
+                    "text/html"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succesfully logged out."
+                        },
+                    "500": {
+                        "descriptopn": "error response",
+                        "schema": {
+                            "$ref":"#/definitions/error"
+                        }
+                    }
+                    }
+                }
+            }
+      
     },
     "definitions": {
         "race": {
@@ -199,6 +700,13 @@
                     "items": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "error": {
+            "properties": {
+                "message" : {
+                    "type": "string"
                 }
             }
         }

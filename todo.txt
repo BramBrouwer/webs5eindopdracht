@@ -1,6 +1,8 @@
 TODO
- - documentatie 
 
+
+- alles aflopen 
+- online callbacks
 
 
 
